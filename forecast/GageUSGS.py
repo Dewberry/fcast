@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+import sys
+from IPython.display import IFrame
 
 LATITUDE = 'Lat'
 LONGITUDE ='Lon'
@@ -15,6 +17,10 @@ DASQMETERS = 'drainage area sq meters'
 class GageUSGS:
 
     def __init__(self, gage: str, get_rc: bool=True):
+        
+        ver = sys.version_info
+        assert ver[0] == 3 and ver[1] >= 6, 'Must be using python version 3.6 or newer' 
+
         self._gage = gage
         self._metadata_url = f'https://waterdata.usgs.gov/nwis/inventory/?site_no={self._gage}&agency_cd=USGS'
         self._rc_url = f'https://waterdata.usgs.gov/nwisweb/get_ratings?site_no={self._gage}&file_type=exsa'
@@ -218,6 +224,19 @@ class GageUSGS:
     def available_data(self):
         """The data available from the metadata url"""
         return self._available_data
+
+    @property
+    def rating_curve_url(self):
+        return self._rc_url
+
+    def open_main_site(self) -> IFrame:
+        """Open the selected USGS station website. Users can use this website to prepare the required parameters for retrieving the desired records."""
+        return IFrame(src=self._metadata_url, width='100%', height='500px')
+
+    def open_rating_curve_site(self) -> IFrame:
+        """Open the selected USGS station website. Users can use this website to prepare the required parameters for retrieving the desired records."""
+        return IFrame(src=self._rc_url, width='100%', height='500px')
+    
      
 # a = 1
 
