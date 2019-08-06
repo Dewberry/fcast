@@ -14,7 +14,6 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import sys
-
 # from IPython.display import IFrame
 
 # Set global variables
@@ -39,7 +38,6 @@ class GageUSGS:
     Parameters:
         gage (str): A string representing a USGS gage id (e.g. '01400000').
         get_rc (bool, optional): Get the rating curve for the USGS gage. Defaults to True.
-
     """
 
     def __init__(self, gage: str, get_rc: bool = True):
