@@ -151,6 +151,7 @@ class GageUSGS:
             Reads the table beginning after comment lines at rc_url
             :return: rating curve dataframe
             """
+            assert 'INDEP' in self.__rc_request.text, 'There is no rating curve available, please set `get_rc` = False'
             a = self.__rc_request.text.split("\n")
             b = [i for i in a if "#" not in i]
             c = [i.split("\t") for i in b]
