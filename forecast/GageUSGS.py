@@ -115,7 +115,7 @@ class GageUSGS:
             """
             soup = BeautifulSoup(self.__metadata_request.text, "html.parser")
             for row in soup.find("div", {"id": "stationTable"}).contents:
-                if "Datum" in str(row):
+                if "Latitude" in str(row):
                     break
             # Get a list of cleaned strings, each representing some metadata
             descrip = [
