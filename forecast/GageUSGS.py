@@ -129,8 +129,17 @@ class GageUSGS:
         self._lon = self._metadata[LONGITUDE]
         self._horizontal_datum = self._metadata[HDATUM]
         self._HUC8 = self._metadata[HUC8]
-        self._vertical_datum = self._metadata[VDATUM]
-        self._feet_above_vertical_datum = self._metadata[RDATUM]
+
+        try:
+            self._vertical_datum = self._metadata[VDATUM]
+        except:
+            self._vertical_datum = None
+
+        try:
+            self._feet_above_vertical_datum = self._metadata[RDATUM]
+        except:
+            self._feet_above_vertical_datum = None
+            
         self._drainage_area_sqmi = self._metadata[DASQMILES]
 
         def get_gage_available_data() -> pd.DataFrame:
