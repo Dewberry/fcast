@@ -14,6 +14,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import sys
+
 # from IPython.display import IFrame
 
 # Set global variables
@@ -132,14 +133,14 @@ class GageUSGS:
 
         try:
             self._vertical_datum = self._metadata[VDATUM]
-        except:
+        except KeyError:
             self._vertical_datum = None
 
         try:
             self._feet_above_vertical_datum = self._metadata[RDATUM]
-        except:
+        except KeyError:
             self._feet_above_vertical_datum = None
-            
+
         self._drainage_area_sqmi = self._metadata[DASQMILES]
 
         def get_gage_available_data() -> pd.DataFrame:
@@ -158,7 +159,9 @@ class GageUSGS:
             Reads the table beginning after comment lines at rc_url
             :return: rating curve dataframe
             """
-            assert 'INDEP' in self.__rc_request.text, 'There is no rating curve available, please set `get_rc` = False'
+            assert (
+                "INDEP" in self.__rc_request.text
+            ), "There is no rating curve available, please set `get_rc` = False"
             a = self.__rc_request.text.split("\n")
             b = [i for i in a if "#" not in i]
             c = [i.split("\t") for i in b]
