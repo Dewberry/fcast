@@ -37,8 +37,12 @@ class NWM:
     This is a super class for ShortRange, MediumRange and Assim.
 
     Parameters:
-        fs (gcsfs.core.GCSFileSystem): The mounted Google Cloud Storage Bucket using gcsfs.
-        comid (int): The comID that corresponds to the stream segment of interest.
+        fs (gcsfs.core.GCSFileSystem): The mounted NWM Google Cloud Storage Bucket using gcsfs.
+            This is created like so: `fs = gcsfs.GCSFileSystem(project='national-water-model')`
+        comid (int): The ComID that corresponds to the stream segment of interest.
+            The ComID is a common identifier (unique) that allows a user of the NHDPlusV21
+            to access the same stream segements across the entire NHDPlus anywhere in the
+            country. More information at http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
         date (str): The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)
         start_hr (int): The starting time (UTC) on for the date specified.
     """
@@ -56,7 +60,12 @@ class NWM:
 
     @property
     def comid(self):
-        """The comID that corresponds to the stream segment of interest."""
+        """The comID that corresponds to the stream segment of interest.
+        The ComID is a common identifier (unique) that allows a user of the NHDPlusV21
+        to access the same stream segements across the entire NHDPlus anywhere in the
+        country. More information at 
+        http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
+        """
         return self._comid
     
     @property
@@ -70,7 +79,11 @@ class NWM:
         return self._start_hr 
 
     def get_NWM_rc(self, rc_filepath = r'data/hydroprop-fulltable2D.nc'):
-        """Opens the hydroprop-fulltable2D.nc file and retireves rating curves"""
+        """Opens the hydroprop-fulltable2D.nc file and retireves rating curves.
+        This is available for download at: 
+        https://web.corral.tacc.utexas.edu/nfiedata/hydraulic-property-table/.
+        More information can be found at: https://web.corral.tacc.utexas.edu/nfiedata/
+        """
         ds = xr.open_dataset(rc_filepath)
         dis_ds = ds.Discharge.sel(CatchId=self._comid)
         dis_df = dis_ds.to_dataframe().reset_index().drop(columns=['CatchId']).dropna()
@@ -83,19 +96,23 @@ class Assim(NWM):
     This is used to get the initial time and streamflow for a forecast being made
 
     Parameters:
-        fs (gcsfs.core.GCSFileSystem): The mounted Google Cloud Storage Bucket using gcsfs.
-        comid (int): The comID that corresponds to the stream segment of interest.
+        fs (gcsfs.core.GCSFileSystem): The mounted NWM Google Cloud Storage Bucket using gcsfs.
+            This is created like so: `fs = gcsfs.GCSFileSystem(project='national-water-model')`
+        comid (int): The ComID that corresponds to the stream segment of interest.
+            The ComID is a common identifier (unique) that allows a user of the NHDPlusV21
+            to access the same stream segements across the entire NHDPlus anywhere in the
+            country. More information at http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
         date (str): The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)
         start_hr (int): The starting time (UTC) on for the date specified.
         hr (int, optional): The hour of the analysis assim of interest (e.g. 0, 1, or 2). Defaults to 0
     """
 
-    def __init__(self, fs, comid, date, start_hr, hr = 0):
+    def __init__(self, fs, comid, date, start_hr, offset = 0):
 
         super().__init__(fs, comid, date, start_hr)
 
-        self._hr = hr
-        self._filepath = f'{BUCKET}/nwm.{date}/{AA}/nwm.t{start_hr}z.{AA}.{CR}.tm0{self._hr}.{EXT}'
+        self._offset = offset
+        self._filepath = f'{BUCKET}/nwm.{self._date}/{AA}/nwm.t{self._start_hr}z.{AA}.{CR}.tm0{self._offset}.{EXT}'
         self.__file = self._fs.open(self._filepath, 'rb')
         self.__assim = xr.open_dataset(self.__file)
 
@@ -120,9 +137,9 @@ class Assim(NWM):
         return n
 
     @property
-    def hr(self):
+    def offset(self):
         """The hour of the analysis assim of interest (e.g. 0, 1, or 2). Defaults to 0"""
-        return self._hr
+        return self._offset
 
     def copy_to_local(self, folder):
         """Allows the download of the file being used to a specified folder"""
@@ -137,8 +154,12 @@ class ShortRange(NWM):
     at a specified date and start time (UTC).
 
     Parameters:
-        fs (gcsfs.core.GCSFileSystem): The mounted Google Cloud Storage Bucket using gcsfs.
-        comid (int): The comID that corresponds to the stream segment of interest.
+        fs (gcsfs.core.GCSFileSystem): The mounted NWM Google Cloud Storage Bucket using gcsfs.
+            This is created like so: `fs = gcsfs.GCSFileSystem(project='national-water-model')`
+        comid (int): The ComID that corresponds to the stream segment of interest.
+            The ComID is a common identifier (unique) that allows a user of the NHDPlusV21
+            to access the same stream segements across the entire NHDPlus anywhere in the
+            country. More information at http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
         date (str): The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)
         start_hr (int): The starting time (UTC) on for the date specified.
     """
@@ -160,10 +181,7 @@ class ShortRange(NWM):
 
         def open_datas():
             """Read all forecast files into one xarray dataset"""
-            openfiles = []
-            for f in self._filepaths:
-                file = fs.open(f, 'rb')
-                openfiles.append(file)
+            openfiles = [self._fs.open(f, 'rb') for f in self._filepaths]
             return xr.open_mfdataset(openfiles)
 
         self._ds = open_datas()
@@ -210,8 +228,12 @@ class MediumRange(NWM):
     at a specified date and start time (UTC).
 
     Parameters:
-        fs (gcsfs.core.GCSFileSystem): The mounted Google Cloud Storage Bucket using gcsfs.
-        comid (int): The comID that corresponds to the stream segment of interest.
+        fs (gcsfs.core.GCSFileSystem): The mounted NWM Google Cloud Storage Bucket using gcsfs.
+            This is created like so: `fs = gcsfs.GCSFileSystem(project='national-water-model')`
+        comid (int): The ComID that corresponds to the stream segment of interest.
+            The ComID is a common identifier (unique) that allows a user of the NHDPlusV21
+            to access the same stream segements across the entire NHDPlus anywhere in the
+            country. More information at http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
         date (str): The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)
         start_hr (int): The starting time (UTC) on for the date specified.
     """
@@ -241,7 +263,7 @@ class MediumRange(NWM):
             for mem in self._filepaths:
                 openfiles = []
                 for f in mem:
-                    file = fs.open(f, 'rb')
+                    file = self._fs.open(f, 'rb')
                     openfiles.append(file)
                 mem_datasets.append(xr.open_mfdataset(openfiles))
             return mem_datasets
