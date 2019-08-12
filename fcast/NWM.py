@@ -1,8 +1,8 @@
 # NWM.py is a set of class objects representing ShortRange and MediumRange
-# MediumRange forecasts from the National Water Model. It also includes 
+# MediumRange forecasts from the National Water Model. It also includes
 # Assim, which is a class representing the model analysis assimilation
 # data. This file is essentially a wrapper around xarray, for the NWM,
-# reading from Google Cloud Storage using gcsfs. This file only works 
+# reading from Google Cloud Storage using gcsfs. This file only works
 # on python version 3.6 or newer.
 #
 # Author: Alec Brazeau (abrazeau@dewberry.com)
@@ -24,12 +24,13 @@ from fcast import GageUSGS
 import sys
 
 # Set global variables
-AA = 'analysis_assim'
-BUCKET = 'national-water-model'
-SR = 'short_range'
-MR = 'medium_range'
-CR = 'channel_rt'
-EXT = 'conus.nc'
+AA = "analysis_assim"
+BUCKET = "national-water-model"
+SR = "short_range"
+MR = "medium_range"
+CR = "channel_rt"
+EXT = "conus.nc"
+
 
 class NWM:
     """A generic class object representation of a NWM netcdf file on GCS
@@ -47,7 +48,9 @@ class NWM:
         start_hr (int): The starting time (UTC) on for the date specified.
     """
 
-    def __init__(self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int):
+    def __init__(
+        self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int
+    ):
 
         # assert that the user system is >= python version 3.6
         ver = sys.version_info
@@ -67,7 +70,7 @@ class NWM:
         http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
         """
         return self._comid
-    
+
     @property
     def date(self):
         """The date of the NWM output being utilized"""
@@ -76,9 +79,11 @@ class NWM:
     @property
     def start_hr(self):
         """The starting time (UTC) on the date specified"""
-        return self._start_hr 
+        return self._start_hr
 
-    def get_NWM_rc(self, rc_filepath = r'data/hydroprop-fulltable2D.nc') -> (scipy.interpolate.interpolate.interp1d, pd.DataFrame):
+    def get_NWM_rc(
+        self, rc_filepath=r"data/hydroprop-fulltable2D.nc"
+    ) -> (scipy.interpolate.interpolate.interp1d, pd.DataFrame):
         """Opens the hydroprop-fulltable2D.nc file and retireves rating curves.
         This is available for download at: 
         https://web.corral.tacc.utexas.edu/nfiedata/hydraulic-property-table/.
@@ -86,9 +91,10 @@ class NWM:
         """
         ds = xr.open_dataset(rc_filepath)
         dis_ds = ds.Discharge.sel(CatchId=self._comid)
-        dis_df = dis_ds.to_dataframe().reset_index().drop(columns=['CatchId']).dropna()
-        f = interp1d(dis_df.Discharge, dis_df.Stage, kind='cubic')
+        dis_df = dis_ds.to_dataframe().reset_index().drop(columns=["CatchId"]).dropna()
+        f = interp1d(dis_df.Discharge, dis_df.Stage, kind="cubic")
         return f, dis_df
+
 
 class Assim(NWM):
     """A representation of an Analysis Assimilation NWM netcdf file on GCS
@@ -107,29 +113,36 @@ class Assim(NWM):
         hr (int, optional): The hour of the analysis assim of interest (e.g. 0, 1, or 2). Defaults to 0
     """
 
-    def __init__(self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int, offset = 0):
+    def __init__(
+        self,
+        fs: gcsfs.core.GCSFileSystem,
+        comid: int,
+        date: str,
+        start_hr: int,
+        offset=0,
+    ):
 
         super().__init__(fs, comid, date, start_hr)
 
         self._offset = offset
-        self._filepath = f'{BUCKET}/nwm.{self._date}/{AA}/nwm.t{self._start_hr}z.{AA}.{CR}.tm0{self._offset}.{EXT}'
-        self.__file = self._fs.open(self._filepath, 'rb')
+        self._filepath = f"{BUCKET}/nwm.{self._date}/{AA}/nwm.t{self._start_hr}z.{AA}.{CR}.tm0{self._offset}.{EXT}"
+        self.__file = self._fs.open(self._filepath, "rb")
         self.__assim = xr.open_dataset(self.__file)
 
     @property
     def filepath(self):
         """The filepath of the netcdf on GCS being utilized"""
         return self._filepath
-    
+
     @property
     def assim_time(self):
         """The analysis assimilation time"""
-        return self.__assim.sel(feature_id=self._comid)['time'].values[0]
-    
+        return self.__assim.sel(feature_id=self._comid)["time"].values[0]
+
     @property
     def assim_flow(self):
         """The streamflow at the analysis assimilation time"""
-        return self.__assim['streamflow'].to_dataframe().loc[self._comid].values[0]
+        return self.__assim["streamflow"].to_dataframe().loc[self._comid].values[0]
 
     @property
     def nfiles(n: int = 3):
@@ -143,9 +156,12 @@ class Assim(NWM):
 
     def copy_to_local(self, folder: str) -> None:
         """Allows the download of the file being used to a specified folder"""
-        with self._fs.open(self._filepath, 'rb') as f:
-            with open(os.path.join(folder, os.path.basename(self._filepath)), 'wb') as fout:
+        with self._fs.open(self._filepath, "rb") as f:
+            with open(
+                os.path.join(folder, os.path.basename(self._filepath)), "wb"
+            ) as fout:
                 fout.write(f.read())
+
 
 class ShortRange(NWM):
     """A representation of a Short Range forecast made using NWM netcdf files on GCS
@@ -164,16 +180,18 @@ class ShortRange(NWM):
         start_hr (int): The starting time (UTC) on for the date specified.
     """
 
-    def __init__(self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int):
+    def __init__(
+        self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int
+    ):
 
         super().__init__(fs, comid, date, start_hr)
 
         def get_filepaths():
             """Get the paths of the files used to build the forecast on GCS"""
             filepaths = []
-            for i in range(1,19): # for times 1-18
+            for i in range(1, 19):  # for times 1-18
                 hr_from_start = str(i).zfill(3)
-                filepath = f'{BUCKET}/nwm.{self._date}/{SR}/nwm.t{self._start_hr}z.{SR}.{CR}.f{hr_from_start}.{EXT}'
+                filepath = f"{BUCKET}/nwm.{self._date}/{SR}/nwm.t{self._start_hr}z.{SR}.{CR}.f{hr_from_start}.{EXT}"
                 filepaths.append(filepath)
             return filepaths
 
@@ -181,7 +199,7 @@ class ShortRange(NWM):
 
         def open_datas():
             """Read all forecast files into one xarray dataset"""
-            openfiles = [self._fs.open(f, 'rb') for f in self._filepaths]
+            openfiles = [self._fs.open(f, "rb") for f in self._filepaths]
             return xr.open_mfdataset(openfiles)
 
         self._ds = open_datas()
@@ -200,26 +218,34 @@ class ShortRange(NWM):
     def nfiles(self):
         """the number of files that amke up the forecast"""
         return len(self._filepaths)
-    
-    def get_streamflow(self, assim_time: str, assim_flow: float, plot=False) -> pd.DataFrame:
+
+    def get_streamflow(
+        self, assim_time: str, assim_flow: float, plot=False
+    ) -> pd.DataFrame:
         """Get the streamflow forecast in a pandas dataframe and optionally plot it"""
-        output_da = self._ds.sel(feature_id=self._comid)['streamflow']
-        times = output_da['time'].values
+        output_da = self._ds.sel(feature_id=self._comid)["streamflow"]
+        times = output_da["time"].values
         flows = output_da.values
         d = {**{assim_time: assim_flow}, **dict(zip(times, flows))}
-        df = pd.DataFrame([d]).T.rename(columns={0:'streamflow'})
+        df = pd.DataFrame([d]).T.rename(columns={0: "streamflow"})
         if plot:
-            ax = df.plot(figsize=(20,6), title=f'Short-range 18-hour forecast for COMID: {self._comid}')
+            ax = df.plot(
+                figsize=(20, 6),
+                title=f"Short-range 18-hour forecast for COMID: {self._comid}",
+            )
             ax.grid(True, which="both")
-            ax.set(xlabel='Date', ylabel='Streamflow (cms)')
+            ax.set(xlabel="Date", ylabel="Streamflow (cms)")
         return df
 
     def copy_to_local(self, folder: str) -> None:
         """Allows the download of all files being used to a specified folder"""
         for file in self._filepaths:
-            with self._fs.open(self._filepath, 'rb') as f:
-                with open(os.path.join(folder, os.path.basename(self._filepath)), 'wb') as fout:
+            with self._fs.open(self._filepath, "rb") as f:
+                with open(
+                    os.path.join(folder, os.path.basename(self._filepath)), "wb"
+                ) as fout:
                     fout.write(f.read())
+
 
 class MediumRange(NWM):
     """A representation of a Medium Range forecast made using NWM netcdf files on GCS
@@ -238,19 +264,21 @@ class MediumRange(NWM):
         start_hr (int): The starting time (UTC) on for the date specified.
     """
 
-    def __init__(self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int):
+    def __init__(
+        self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int
+    ):
 
         super().__init__(fs, comid, date, start_hr)
 
         def get_filepaths():
             """Get the filepaths that will be used to build the forecast. One list for each member"""
             filepaths = []
-            for i in range(1,8): # ensemble members
+            for i in range(1, 8):  # ensemble members
                 mem = str(i)
                 mem_filepaths = []
-                for i in range(3, 205, 3): # for times 3-240 or 3-204 in steps of 3
+                for i in range(3, 205, 3):  # for times 3-240 or 3-204 in steps of 3
                     hr = str(i).zfill(3)
-                    filepath = f'{BUCKET}/nwm.{self._date}/{MR}_mem{mem}/nwm.t{self._start_hr}z.{MR}.{CR}_{mem}.f{hr}.{EXT}'
+                    filepath = f"{BUCKET}/nwm.{self._date}/{MR}_mem{mem}/nwm.t{self._start_hr}z.{MR}.{CR}_{mem}.f{hr}.{EXT}"
                     mem_filepaths.append(filepath)
                 filepaths.append(mem_filepaths)
             return filepaths
@@ -263,7 +291,7 @@ class MediumRange(NWM):
             for mem in self._filepaths:
                 openfiles = []
                 for f in mem:
-                    file = self._fs.open(f, 'rb')
+                    file = self._fs.open(f, "rb")
                     openfiles.append(file)
                 mem_datasets.append(xr.open_mfdataset(openfiles))
             return mem_datasets
@@ -285,31 +313,41 @@ class MediumRange(NWM):
         """The total number of files used to build the forecast"""
         return int(len(self._filepaths) * len(self._filepaths[0]))
 
-    def get_streamflow(self, assim_time: str, assim_flow: float, plot=False) -> pd.DataFrame:
+    def get_streamflow(
+        self, assim_time: str, assim_flow: float, plot=False
+    ) -> pd.DataFrame:
         """Get the forecasted streamflow for all members in one pandas dataframe. Optionally plot it."""
         outjson = []
         for ds in self._mem_dsets:
-            output_da = ds.sel(feature_id=self._comid)['streamflow']
-            times = output_da['time'].values.astype(str)
+            output_da = ds.sel(feature_id=self._comid)["streamflow"]
+            times = output_da["time"].values.astype(str)
             arr = output_da.values
             d = {}
-            d[ds.attrs['ensemble_member_number']] = {**{str(assim_time): assim_flow}, **dict(zip(times, arr))}
+            d[ds.attrs["ensemble_member_number"]] = {
+                **{str(assim_time): assim_flow},
+                **dict(zip(times, arr)),
+            }
             outjson.append(d)
-        df = pd.concat([pd.read_json(json.dumps(x), orient='index') for x in outjson]).T
-        df['mean'] = df.mean(axis=1)
+        df = pd.concat([pd.read_json(json.dumps(x), orient="index") for x in outjson]).T
+        df["mean"] = df.mean(axis=1)
         if plot:
-            ax = df.plot(figsize=(20,6), title=f'Medium-range seven member ensemble forecast for COMID: {self._comid}')
-            ax.legend(title='Ensemble Members')
+            ax = df.plot(
+                figsize=(20, 6),
+                title=f"Medium-range seven member ensemble forecast for COMID: {self._comid}",
+            )
+            ax.legend(title="Ensemble Members")
             ax.grid(True, which="both")
-            ax.set(xlabel='Date', ylabel='Streamflow (cms)')
+            ax.set(xlabel="Date", ylabel="Streamflow (cms)")
         return df
 
     def copy_to_local(self, folder: str) -> None:
         """Allows the download of all files being used to a specified folder"""
         for mem in self._filepaths:
             for file in mem:
-                with self._fs.open(self._filepath, 'rb') as f:
-                    with open(os.path.join(folder, os.path.basename(self._filepath)), 'wb') as fout:
+                with self._fs.open(self._filepath, "rb") as f:
+                    with open(
+                        os.path.join(folder, os.path.basename(self._filepath)), "wb"
+                    ) as fout:
                         fout.write(f.read())
 
 
@@ -317,19 +355,24 @@ class MediumRange(NWM):
 ## -------------------------- Functions ----------------------------- ##
 ## ------------------------------------------------------------------ ##
 
-def get_USGS_stations(comid: int, s3path = 's3://nwm-datasets/Data/Vector/USGS_NHDPlusv2/STATID_COMID_dict.json') -> list:
+
+def get_USGS_stations(
+    comid: int,
+    s3path="s3://nwm-datasets/Data/Vector/USGS_NHDPlusv2/STATID_COMID_dict.json",
+) -> list:
     """Given a comid, go find the corresponding USGS gage ids"""
-    s3 = boto3.resource('s3')
+    s3 = boto3.resource("s3")
     bucket_name = s3path.split(r"s3://")[1].split(r"/")[0]
     key = s3path.split(r"{}/".format(bucket_name))[1]
     content_object = s3.Object(bucket_name=bucket_name, key=key)
-    file_content = content_object.get()['Body'].read().decode('utf-8')
+    file_content = content_object.get()["Body"].read().decode("utf-8")
     json_content = json.loads(file_content)
     gageids = []
     for k, v in json_content.items():
         if v == comid:
             gageids.append(k)
     return gageids
+
 
 def get_USGS_rc(comid: int):
     """Given a comid, get the rating curve for the matching USGS Gages"""
@@ -338,10 +381,10 @@ def get_USGS_rc(comid: int):
     for gage in gageids:
         try:
             rc = GageUSGS(gage).rating_curve.dropna()
-            f = interp1d(rc.DEP_cms, rc.INDEP_SHIFT_m, kind='cubic')
+            f = interp1d(rc.DEP_cms, rc.INDEP_SHIFT_m, kind="cubic")
             rcs.append((f, rc))
         except AssertionError as e:
-            print(f'{e} for station {gage}')
+            print(f"{e} for station {gage}")
     if len(rcs) == 1:
         rcs = rcs[0]
     return rcs
