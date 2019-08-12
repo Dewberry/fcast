@@ -78,7 +78,7 @@ class NWM:
         """The starting time (UTC) on the date specified"""
         return self._start_hr 
 
-    def get_NWM_rc(self, rc_filepath = r'data/hydroprop-fulltable2D.nc'):
+    def get_NWM_rc(self, rc_filepath = r'data/hydroprop-fulltable2D.nc') -> (scipy.interpolate.interpolate.interp1d, pd.DataFrame):
         """Opens the hydroprop-fulltable2D.nc file and retireves rating curves.
         This is available for download at: 
         https://web.corral.tacc.utexas.edu/nfiedata/hydraulic-property-table/.
@@ -107,7 +107,7 @@ class Assim(NWM):
         hr (int, optional): The hour of the analysis assim of interest (e.g. 0, 1, or 2). Defaults to 0
     """
 
-    def __init__(self, fs, comid, date, start_hr, offset = 0):
+    def __init__(self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int, offset = 0):
 
         super().__init__(fs, comid, date, start_hr)
 
@@ -141,7 +141,7 @@ class Assim(NWM):
         """The hour of the analysis assim of interest (e.g. 0, 1, or 2). Defaults to 0"""
         return self._offset
 
-    def copy_to_local(self, folder):
+    def copy_to_local(self, folder: str) -> None:
         """Allows the download of the file being used to a specified folder"""
         with self._fs.open(self._filepath, 'rb') as f:
             with open(os.path.join(folder, os.path.basename(self._filepath)), 'wb') as fout:
@@ -164,7 +164,7 @@ class ShortRange(NWM):
         start_hr (int): The starting time (UTC) on for the date specified.
     """
 
-    def __init__(self, fs, comid, date, start_hr):
+    def __init__(self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int):
 
         super().__init__(fs, comid, date, start_hr)
 
@@ -201,7 +201,7 @@ class ShortRange(NWM):
         """the number of files that amke up the forecast"""
         return len(self._filepaths)
     
-    def get_streamflow(self, assim_time, assim_flow, plot=False):
+    def get_streamflow(self, assim_time: str, assim_flow: float, plot=False) -> pd.DataFrame:
         """Get the streamflow forecast in a pandas dataframe and optionally plot it"""
         output_da = self._ds.sel(feature_id=self._comid)['streamflow']
         times = output_da['time'].values
@@ -214,7 +214,7 @@ class ShortRange(NWM):
             ax.set(xlabel='Date', ylabel='Streamflow (cms)')
         return df
 
-    def copy_to_local(self, folder):
+    def copy_to_local(self, folder: str) -> None:
         """Allows the download of all files being used to a specified folder"""
         for file in self._filepaths:
             with self._fs.open(self._filepath, 'rb') as f:
@@ -238,7 +238,7 @@ class MediumRange(NWM):
         start_hr (int): The starting time (UTC) on for the date specified.
     """
 
-    def __init__(self, fs, comid, date, start_hr):
+    def __init__(self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int):
 
         super().__init__(fs, comid, date, start_hr)
 
@@ -285,7 +285,7 @@ class MediumRange(NWM):
         """The total number of files used to build the forecast"""
         return int(len(self._filepaths) * len(self._filepaths[0]))
 
-    def get_streamflow(self, assim_time, assim_flow, plot=False):
+    def get_streamflow(self, assim_time: str, assim_flow: float, plot=False) -> pd.DataFrame:
         """Get the forecasted streamflow for all members in one pandas dataframe. Optionally plot it."""
         outjson = []
         for ds in self._mem_dsets:
@@ -304,7 +304,7 @@ class MediumRange(NWM):
             ax.set(xlabel='Date', ylabel='Streamflow (cms)')
         return df
 
-    def copy_to_local(self, folder):
+    def copy_to_local(self, folder: str) -> None:
         """Allows the download of all files being used to a specified folder"""
         for mem in self._filepaths:
             for file in mem:
@@ -317,7 +317,7 @@ class MediumRange(NWM):
 ## -------------------------- Functions ----------------------------- ##
 ## ------------------------------------------------------------------ ##
 
-def get_USGS_stations(comid, s3path = 's3://nwm-datasets/Data/Vector/USGS_NHDPlusv2/STATID_COMID_dict.json'):
+def get_USGS_stations(comid: int, s3path = 's3://nwm-datasets/Data/Vector/USGS_NHDPlusv2/STATID_COMID_dict.json') -> list:
     """Given a comid, go find the corresponding USGS gage ids"""
     s3 = boto3.resource('s3')
     bucket_name = s3path.split(r"s3://")[1].split(r"/")[0]
@@ -331,7 +331,7 @@ def get_USGS_stations(comid, s3path = 's3://nwm-datasets/Data/Vector/USGS_NHDPlu
             gageids.append(k)
     return gageids
 
-def get_USGS_rc(comid):
+def get_USGS_rc(comid: int):
     """Given a comid, get the rating curve for the matching USGS Gages"""
     gageids = get_USGS_stations(comid)
     rcs = []
