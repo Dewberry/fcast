@@ -225,9 +225,7 @@ class ShortRange(NWM):
         """the number of files that amke up the forecast"""
         return len(self._filepaths)
 
-    def get_streamflow(
-        self, assim_time: str, assim_flow: float
-    ) -> pd.DataFrame:
+    def get_streamflow(self, assim_time: str, assim_flow: float) -> pd.DataFrame:
         """Get the streamflow forecast in a pandas dataframe and optionally plot it"""
         output_da = self._ds.sel(feature_id=self._comid)["streamflow"]
         times = output_da["time"].values
@@ -262,21 +260,28 @@ class MediumRange(NWM):
             http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
         date (str): The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)
         start_hr (int): The starting time (UTC) on for the date specified.
+        members (list): The members you want the medium range forecast for. Defaults to [1, 2, 3, 4, 5, 6, 7]
     """
 
     def __init__(
-        self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int
+        self,
+        fs: gcsfs.core.GCSFileSystem,
+        comid: int,
+        date: str,
+        start_hr: int,
+        members: list = [1, 2, 3, 4, 5, 6, 7],
     ):
 
         super().__init__(fs, comid, date, start_hr)
 
+        self._members = members
+
         def get_filepaths():
             """Get the filepaths that will be used to build the forecast. One list for each member"""
             filepaths = []
-            for i in range(1, 8):  # ensemble members
-                mem = str(i)
+            for mem in members:  # ensemble members 1-7
                 mem_filepaths = []
-                for i in range(3, 205, 3):  # for times 3-240 or 3-204 in steps of 3
+                for i in range(3, 205, 3):  # for hours 3-204 in steps of 3
                     hr = str(i).zfill(3)
                     filepath = f"{BUCKET}/nwm.{self._date}/{MR}_mem{mem}/nwm.t{self._start_hr}z.{MR}.{CR}_{mem}.f{hr}.{EXT}"
                     mem_filepaths.append(filepath)
@@ -299,6 +304,10 @@ class MediumRange(NWM):
         self._mem_dsets = open_datas()
 
     @property
+    def members(self):
+        return self._members
+
+    @property
     def filepaths(self):
         """A list of lists, each containing the filepaths used for each member"""
         return self._filepaths
@@ -313,9 +322,7 @@ class MediumRange(NWM):
         """The total number of files used to build the forecast"""
         return int(len(self._filepaths) * len(self._filepaths[0]))
 
-    def get_streamflow(
-        self, assim_time: str, assim_flow: float
-    ) -> pd.DataFrame:
+    def get_streamflow(self, assim_time: str, assim_flow: float) -> pd.DataFrame:
         """Get the forecasted streamflow for all members in one pandas dataframe. Optionally plot it."""
         outjson = []
         for ds in self._mem_dsets:
