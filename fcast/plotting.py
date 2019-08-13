@@ -36,6 +36,7 @@ def new_plot(
 
 
 def plotShortRange(df: pd.DataFrame, comid: int, flow: bool = True):
+    """Function for plotting short range forecasts"""
     ax = df.plot(
         figsize=(20, 6), title=f"Short-range 18-hour forecast for COMID: {comid}"
     )
@@ -47,6 +48,7 @@ def plotShortRange(df: pd.DataFrame, comid: int, flow: bool = True):
 
 
 def plotMediumRange(df: pd.DataFrame, comid: int, flow: bool = True):
+    """Function for plotting medium range forecasts"""
     ax = df.plot(
         figsize=(20, 6),
         title=f"Medium-range seven member ensemble forecast for COMID: {comid}",

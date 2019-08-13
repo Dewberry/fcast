@@ -259,11 +259,11 @@ class ShortRange(NWM):
 
     @property
     def nfiles(self):
-        """the number of files that amke up the forecast"""
+        """The number of files that make up the forecast"""
         return len(self._filepaths)
 
     def get_streamflow(self, assim_time: str, assim_flow: float) -> pd.DataFrame:
-        """Get the streamflow forecast in a pandas dataframe and optionally plot it"""
+        """Get the streamflow forecast in a pandas dataframe"""
         output_da = self._ds.sel(feature_id=self._comid)["streamflow"]
         times = output_da["time"].values
         flows = output_da.values
@@ -359,7 +359,7 @@ class MediumRange(NWM):
         return int(len(self._filepaths) * len(self._filepaths[0]))
 
     def get_streamflow(self, assim_time: str, assim_flow: float) -> pd.DataFrame:
-        """Get the forecasted streamflow for all members in one pandas dataframe. Optionally plot it."""
+        """Get the forecasted streamflow for all members in one pandas dataframe."""
         outjson = []
         for ds in self._mem_dsets:
             output_da = ds.sel(feature_id=self._comid)["streamflow"]

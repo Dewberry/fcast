@@ -103,9 +103,9 @@ class StreamSegmentNHD:
             "QA": "Mean Annual Flow from runoff (cfs)",
             "VA": "Mean Annual Velocity for QA (fps)",
             "QC": "Mean Annual Flow with Reference Gage Regression applied to QB (cfs)."
-            " Best EROM estimate of “natural” mean flow.",
+            " Best EROM estimate of 'natural' mean flow.",
             "VC": "Mean Annual Velocity for QC (fps)."
-            " Best EROM estimate of “natural” mean velocity.",
+            " Best EROM estimate of 'natural' mean velocity.",
             "QE": "Mean Annual Flow from gage adjustment (cfs)."
             " Best EROM estimate of actual mean flow.",
             "VE": "Mean Annual Velocity from gage adjustment (fps)."
@@ -141,7 +141,7 @@ class StreamSegmentNHD:
 
     @property
     def resolution(self):
-        """NHD database resolution (i.e. “high”, “medium” or “local”)"""
+        """NHD database resolution (i.e. 'high', 'medium' or 'local')"""
         return self._resolution
 
     @property
@@ -166,7 +166,7 @@ class StreamSegmentNHD:
 
     @property
     def WB_area_comid(self):
-        """ComID of the NHD polygonal water feature through which a NHD “Artificial Path” flowline flows"""
+        """ComID of the NHD polygonal water feature through which a NHD "Artificial Path" flowline flows"""
         return self._WB_area_comid
 
     @property
@@ -231,12 +231,12 @@ class StreamSegmentNHD:
 
     @property
     def annual_mean_flow_QC(self):
-        """Mean Annual Flow with Reference Gage Regression applied to QB (cfs). Best EROM estimate of “natural” mean flow."""
+        """Mean Annual Flow with Reference Gage Regression applied to QB (cfs). Best EROM estimate of "natural" mean flow."""
         return self._annual_mean_flow_QC
 
     @property
     def annual_mean_vel_QC(self):
-        """Mean Annual Velocity for QC (fps). Best EROM estimate of “natural” mean velocity."""
+        """Mean Annual Velocity for QC (fps). Best EROM estimate of "natural" mean velocity."""
         return self._annual_mean_vel_QC
 
     @property
@@ -254,8 +254,8 @@ class StreamSegmentNHD:
         """
         'QA': 'Mean Annual Flow from runoff (cfs)',
         'VA': 'Mean Annual Velocity for QA (fps)',
-        'QC': 'Mean Annual Flow with Reference Gage Regression applied to QB (cfs). Best EROM estimate of “natural” mean flow.',
-        'VC': 'Mean Annual Velocity for QC (fps). Best EROM estimate of “natural” mean velocity.',
+        'QC': 'Mean Annual Flow with Reference Gage Regression applied to QB (cfs). Best EROM estimate of "natural" mean flow.',
+        'VC': 'Mean Annual Velocity for QC (fps). Best EROM estimate of "natural" mean velocity.',
         'QE': 'Mean Annual Flow from gage adjustment (cfs). Best EROM estimate of actual mean flow.',
         'VE': 'Mean Annual Velocity from gage adjustment (fps). Best EROM estimate of actual mean velocity.
         """
@@ -268,8 +268,10 @@ class StreamSegmentNHD:
 
     @property
     def crs_proj4(self):
+        """The crs of the dataset as a proj4 string"""
         return self._crs_proj4
 
     @property
     def crs_wkt(self):
+        """The crs of the dataset as wkt"""
         return self._crs_wkt
