@@ -25,6 +25,7 @@ from scipy.interpolate import interp1d
 import boto3
 from fcast import GageUSGS
 import sys
+import os
 
 # Set global variables
 AA = "analysis_assim"
@@ -53,13 +54,19 @@ class NWM:
     """
 
     def __init__(
-        self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int
+        self,
+        fs: gcsfs.core.GCSFileSystem,
+        comid: int,
+        date: str,
+        start_hr: int,
+        NWMtype: str,
     ):
 
         # assert that the user system is >= python version 3.6
         ver = sys.version_info
         assert ver[0] == 3 and ver[1] >= 6, "Must be using python version 3.6 or newer"
 
+        self.__NWMtype = NWMtype
         self._fs = fs
         self._comid = comid
         self._date = date
@@ -99,6 +106,32 @@ class NWM:
         f = interp1d(dis_df.Discharge, dis_df.Stage, kind="cubic")
         return f, dis_df
 
+    def copy_to_local(self, folder: str) -> None:
+        """Allows the download of all files being used to a specified folder"""
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        if self.__NWMtype == "medium":
+            for mem in self._filepaths:
+                for file in mem:
+                    with self._fs.open(file, "rb") as f:
+                        with open(
+                            os.path.join(folder, os.path.basename(file)), "wb"
+                        ) as fout:
+                            fout.write(f.read())
+        elif self.__NWMtype == "short":
+            for file in self._filepaths:
+                with self._fs.open(file, "rb") as f:
+                    with open(
+                        os.path.join(folder, os.path.basename(file)), "wb"
+                    ) as fout:
+                        fout.write(f.read())
+        else:
+            with self._fs.open(self._filepath, "rb") as f:
+                with open(
+                    os.path.join(folder, os.path.basename(self._filepath)), "wb"
+                ) as fout:
+                    fout.write(f.read())
+
 
 class Assim(NWM):
     """A representation of an Analysis Assimilation NWM netcdf file on GCS
@@ -125,9 +158,10 @@ class Assim(NWM):
         date: str,
         start_hr: int,
         offset=0,
+        NWMtype="assim",
     ):
 
-        super().__init__(fs, comid, date, start_hr)
+        super().__init__(fs, comid, date, start_hr, NWMtype)
 
         self._offset = offset
         self._filepath = f"{BUCKET}/nwm.{self._date}/{AA}/nwm.t{self._start_hr}z.{AA}.{CR}.tm0{self._offset}.{EXT}"
@@ -159,14 +193,6 @@ class Assim(NWM):
         """The hour of the analysis assim of interest (e.g. 0, 1, or 2). Defaults to 0"""
         return self._offset
 
-    def copy_to_local(self, folder: str) -> None:
-        """Allows the download of the file being used to a specified folder"""
-        with self._fs.open(self._filepath, "rb") as f:
-            with open(
-                os.path.join(folder, os.path.basename(self._filepath)), "wb"
-            ) as fout:
-                fout.write(f.read())
-
 
 class ShortRange(NWM):
     """A representation of a Short Range forecast made using NWM netcdf files on GCS
@@ -187,10 +213,15 @@ class ShortRange(NWM):
     """
 
     def __init__(
-        self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int
+        self,
+        fs: gcsfs.core.GCSFileSystem,
+        comid: int,
+        date: str,
+        start_hr: int,
+        NWMtype="short",
     ):
 
-        super().__init__(fs, comid, date, start_hr)
+        super().__init__(fs, comid, date, start_hr, NWMtype)
 
         self._forecast_hours = list(range(1, 19))
 
@@ -241,15 +272,6 @@ class ShortRange(NWM):
         df = pd.DataFrame([d]).T.rename(columns={0: "streamflow"})
         return df
 
-    def copy_to_local(self, folder: str) -> None:
-        """Allows the download of all files being used to a specified folder"""
-        for file in self._filepaths:
-            with self._fs.open(self._filepath, "rb") as f:
-                with open(
-                    os.path.join(folder, os.path.basename(self._filepath)), "wb"
-                ) as fout:
-                    fout.write(f.read())
-
 
 class MediumRange(NWM):
     """A representation of a Medium Range forecast made using NWM netcdf files on GCS
@@ -277,9 +299,10 @@ class MediumRange(NWM):
         date: str,
         start_hr: int,
         members: list = [1, 2, 3, 4, 5, 6, 7],
+        NWMtype="medium",
     ):
 
-        super().__init__(fs, comid, date, start_hr)
+        super().__init__(fs, comid, date, start_hr, NWMtype)
 
         self._members = members
         self._forecast_hours = list(range(3, 205, 3))
@@ -352,16 +375,6 @@ class MediumRange(NWM):
         df = pd.concat([pd.read_json(json.dumps(x), orient="index") for x in outjson]).T
         df["mean"] = df.mean(axis=1)
         return df
-
-    def copy_to_local(self, folder: str) -> None:
-        """Allows the download of all files being used to a specified folder"""
-        for mem in self._filepaths:
-            for file in mem:
-                with self._fs.open(self._filepath, "rb") as f:
-                    with open(
-                        os.path.join(folder, os.path.basename(self._filepath)), "wb"
-                    ) as fout:
-                        fout.write(f.read())
 
 
 ## ------------------------------------------------------------------ ##
