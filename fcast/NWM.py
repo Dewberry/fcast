@@ -192,10 +192,12 @@ class ShortRange(NWM):
 
         super().__init__(fs, comid, date, start_hr)
 
+        self._forecast_hours = list(range(1, 19))
+
         def get_filepaths():
             """Get the paths of the files used to build the forecast on GCS"""
             filepaths = []
-            for i in range(1, 19):  # for times 1-18
+            for i in self._forecast_hours:  # for times 1-18
                 hr_from_start = str(i).zfill(3)
                 filepath = f"{BUCKET}/nwm.{self._date}/{SR}/nwm.t{self._start_hr}z.{SR}.{CR}.f{hr_from_start}.{EXT}"
                 filepaths.append(filepath)
@@ -209,6 +211,11 @@ class ShortRange(NWM):
             return xr.open_mfdataset(openfiles)
 
         self._ds = open_datas()
+
+    @property
+    def forecast_hours(self):
+        """A list of forecast hours. For ShortRange this is hours 1-18"""
+        return self._forecast_hours
 
     @property
     def filepaths(self):
@@ -275,13 +282,14 @@ class MediumRange(NWM):
         super().__init__(fs, comid, date, start_hr)
 
         self._members = members
+        self._forecast_hours = list(range(3, 205, 3))
 
         def get_filepaths():
             """Get the filepaths that will be used to build the forecast. One list for each member"""
             filepaths = []
             for mem in members:  # ensemble members 1-7
                 mem_filepaths = []
-                for i in range(3, 205, 3):  # for hours 3-204 in steps of 3
+                for i in self._forecast_hours:  # for hours 3-204 in steps of 3
                     hr = str(i).zfill(3)
                     filepath = f"{BUCKET}/nwm.{self._date}/{MR}_mem{mem}/nwm.t{self._start_hr}z.{MR}.{CR}_{mem}.f{hr}.{EXT}"
                     mem_filepaths.append(filepath)
@@ -305,7 +313,13 @@ class MediumRange(NWM):
 
     @property
     def members(self):
+        """The members that a MediumRange forecast will be created for"""
         return self._members
+
+    @property
+    def forecast_hours(self):
+        """A list of forecast hours. For MediumRange this is hours 3-204 in steps of 3"""
+        return self._forecast_hours
 
     @property
     def filepaths(self):
