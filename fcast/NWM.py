@@ -17,7 +17,6 @@
 # Import the required libs
 import gcsfs
 import xarray as xr
-import matplotlib.pyplot as plt
 import numpy as np
 import json
 import pandas as pd
