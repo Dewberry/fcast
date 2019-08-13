@@ -209,7 +209,7 @@ class GageUSGS:
         if self.__get_rc:
             # Only retrieve rating curve info if specified at init. Defaults to True.
             self.__rc_request = requests.get(self._rc_url)
-            self._rating_curve = get_rating_curve()
+            self._rating_curve = get_rating_curve().dropna()
             self._rating_curve_metadata = get_rc_metadata()
         else:
             # Use this attr as an error message if the rating curve properties are called
