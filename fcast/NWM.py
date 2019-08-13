@@ -3,7 +3,10 @@
 # Assim, which is a class representing the model analysis assimilation
 # data. This file is essentially a wrapper around xarray, for the NWM,
 # reading from Google Cloud Storage using gcsfs. This file only works
-# on python version 3.6 or newer.
+# on python version 3.6 or newer. The NWM is available on GCS at:
+# https://console.cloud.google.com/marketplace/details/noaa-public/
+# national-water-model?filter=category:climate&id=2b3b4e1c-20ad-
+# 455c-89c5-7c09b82c7f98
 #
 # Author: Alec Brazeau (abrazeau@dewberry.com)
 #
@@ -43,7 +46,8 @@ class NWM:
         comid (int): The ComID that corresponds to the stream segment of interest.
             The ComID is a common identifier (unique) that allows a user of the NHDPlusV21
             to access the same stream segements across the entire NHDPlus anywhere in the
-            country. More information at http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
+            country. More information at http://www.horizon-systems.com/NHDPlus/NHDPlusV2
+            _documentation.php#NHDPlusV2%20User%20Guide
         date (str): The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)
         start_hr (int): The starting time (UTC) on for the date specified.
     """
@@ -83,7 +87,7 @@ class NWM:
 
     def get_NWM_rc(
         self, rc_filepath=r"data/hydroprop-fulltable2D.nc"
-    ) -> (scipy.interpolate.interpolate.interp1d, pd.DataFrame):
+    ) -> (interp1d, pd.DataFrame):
         """Opens the hydroprop-fulltable2D.nc file and retireves rating curves.
         This is available for download at: 
         https://web.corral.tacc.utexas.edu/nfiedata/hydraulic-property-table/.
@@ -107,7 +111,8 @@ class Assim(NWM):
         comid (int): The ComID that corresponds to the stream segment of interest.
             The ComID is a common identifier (unique) that allows a user of the NHDPlusV21
             to access the same stream segements across the entire NHDPlus anywhere in the
-            country. More information at http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
+            country. More information at:
+            http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
         date (str): The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)
         start_hr (int): The starting time (UTC) on for the date specified.
         hr (int, optional): The hour of the analysis assim of interest (e.g. 0, 1, or 2). Defaults to 0
@@ -175,7 +180,8 @@ class ShortRange(NWM):
         comid (int): The ComID that corresponds to the stream segment of interest.
             The ComID is a common identifier (unique) that allows a user of the NHDPlusV21
             to access the same stream segements across the entire NHDPlus anywhere in the
-            country. More information at http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
+            country. More information at:
+            http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
         date (str): The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)
         start_hr (int): The starting time (UTC) on for the date specified.
     """
@@ -220,7 +226,7 @@ class ShortRange(NWM):
         return len(self._filepaths)
 
     def get_streamflow(
-        self, assim_time: str, assim_flow: float, plot=False
+        self, assim_time: str, assim_flow: float
     ) -> pd.DataFrame:
         """Get the streamflow forecast in a pandas dataframe and optionally plot it"""
         output_da = self._ds.sel(feature_id=self._comid)["streamflow"]
@@ -228,13 +234,6 @@ class ShortRange(NWM):
         flows = output_da.values
         d = {**{assim_time: assim_flow}, **dict(zip(times, flows))}
         df = pd.DataFrame([d]).T.rename(columns={0: "streamflow"})
-        if plot:
-            ax = df.plot(
-                figsize=(20, 6),
-                title=f"Short-range 18-hour forecast for COMID: {self._comid}",
-            )
-            ax.grid(True, which="both")
-            ax.set(xlabel="Date", ylabel="Streamflow (cms)")
         return df
 
     def copy_to_local(self, folder: str) -> None:
@@ -259,7 +258,8 @@ class MediumRange(NWM):
         comid (int): The ComID that corresponds to the stream segment of interest.
             The ComID is a common identifier (unique) that allows a user of the NHDPlusV21
             to access the same stream segements across the entire NHDPlus anywhere in the
-            country. More information at http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
+            country. More information at:
+            http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide
         date (str): The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)
         start_hr (int): The starting time (UTC) on for the date specified.
     """
@@ -314,7 +314,7 @@ class MediumRange(NWM):
         return int(len(self._filepaths) * len(self._filepaths[0]))
 
     def get_streamflow(
-        self, assim_time: str, assim_flow: float, plot=False
+        self, assim_time: str, assim_flow: float
     ) -> pd.DataFrame:
         """Get the forecasted streamflow for all members in one pandas dataframe. Optionally plot it."""
         outjson = []
@@ -330,14 +330,6 @@ class MediumRange(NWM):
             outjson.append(d)
         df = pd.concat([pd.read_json(json.dumps(x), orient="index") for x in outjson]).T
         df["mean"] = df.mean(axis=1)
-        if plot:
-            ax = df.plot(
-                figsize=(20, 6),
-                title=f"Medium-range seven member ensemble forecast for COMID: {self._comid}",
-            )
-            ax.legend(title="Ensemble Members")
-            ax.grid(True, which="both")
-            ax.set(xlabel="Date", ylabel="Streamflow (cms)")
         return df
 
     def copy_to_local(self, folder: str) -> None:
