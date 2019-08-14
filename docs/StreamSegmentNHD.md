@@ -5,15 +5,16 @@ in the NHDPlusV2.1. It is built for easy access to a single stream
 segment represented by a ComID without overburdening memory. It is
 meant for the NHDPlusV21_National_Seamless_Flattened_Lower48.gdb. It
 also requires a ComID dictionary used as a map, which can be found at
-s3://nwm-datasets/Data/Vector/NHDPlusV21_CONUS_seamless/comidDict_NHDPlusV21.json
+`s3://nwm-datasets/Data/Vector/NHDPlusV21_CONUS_seamless/comidDict_NHDPlusV21.json`
 or can be made using fiona like so:
 ```python
+gdb = 'NHDPlusV21_National_Seamless_Flattened_Lower48.gdb'
 src = fiona.open(gdb, layer='NHDFlowline_Network')
 comidDict = {src[f]['properties']['COMID']: k for k in src.keys()}
 ```
 
 ```python
-StreamSegmentNHD(self, comid: int, comidDict: dict, src: <function open at 0x0000020623B07D90>, warning: bool = True)
+StreamSegmentNHD(self, comid: int, comidDict: dict, src: fiona.collection, warning: bool = True)
 ```
 A representation of one individual NHDPlusV2.1 ComID stream segment.
 
@@ -31,6 +32,7 @@ Parameters:
  - `warning (bool, optional)`: Defaults to true. Raises a warning to ensure the comidDict
                           NHDPlus version matches that of the gdb.
 
+# Attributes / Methods:
 ## annual_mean_flow_QA
 Mean Annual Flow from runoff (cfs)
 ## annual_mean_flow_QC
@@ -57,7 +59,8 @@ The crs of the dataset as wkt
 
     'QA': 'Mean Annual Flow from runoff (cfs)',
     'VA': 'Mean Annual Velocity for QA (fps)',
-    'QC': 'Mean Annual Flow with Reference Gage Regression applied to QB (cfs). Best EROM estimate of "natural" mean flow.',
+    'QC': 'Mean Annual Flow with Reference Gage Regression applied to QB (cfs). 
+           Best EROM estimate of "natural" mean flow.',
     'VC': 'Mean Annual Velocity for QC (fps). Best EROM estimate of "natural" mean velocity.',
     'QE': 'Mean Annual Flow from gage adjustment (cfs). Best EROM estimate of actual mean flow.',
     'VE': 'Mean Annual Velocity from gage adjustment (fps). Best EROM estimate of actual mean velocity.

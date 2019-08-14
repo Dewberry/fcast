@@ -1,4 +1,4 @@
-# NWM.py is a set of class objects representing ShortRange and MediumRange
+# NWM.py is a set of class objects representing ShortRange and 
 # MediumRange forecasts from the National Water Model. It also includes
 # Assim, which is a class representing the model analysis assimilation
 # data. This file is essentially a wrapper around xarray, for the NWM,
@@ -275,7 +275,7 @@ class ShortRange(NWM):
 class MediumRange(NWM):
     """A representation of a Medium Range forecast made using NWM netcdf files on GCS
 
-    Pulls the relevant files from GCS to make an 18 hour streamflow forecast beginning 
+    Pulls the relevant files from GCS to make an 8.5 day streamflow forecast beginning 
     at a specified date and start time (UTC).
 
     Parameters:

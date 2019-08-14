@@ -1,9 +1,9 @@
 # Overview
 
-__fcast__ is a collection of python tools used for forecasting flood events and their impact on transportation infrastructure. The following datasets are used:
+`fcast` is a collection of python tools used for forecasting flood events and their impact on transportation infrastructure. The following datasets are used:
 
 - [The NHDPlus V2.1 dataset](http://www.horizon-systems.com/NHDPlus/NHDPlusV2_home.php)
-    - In particular, the NHDPlusV21_National_Seamless_Flattened_Lower48.gdb is being utilized. [Click here for a download.](http://www.horizon-systems.com/NHDPlusData/NHDPlusV21/Data/NationalData/NHDPlusV21_NationalData_Seamless_Geodatabase_Lower48_07.7z) __Warning: ~15 GB in size!__
+    - In particular, the _NHDPlusV21_National_Seamless_Flattened_Lower48.gdb_ is being utilized. [Click here for a download.](http://www.horizon-systems.com/NHDPlusData/NHDPlusV21/Data/NationalData/NHDPlusV21_NationalData_Seamless_Geodatabase_Lower48_07.7z) __Warning: ~15 GB in size!__
 - Staged Elevation from [The National Map](https://www.usgs.gov/core-science-systems/national-geospatial-program/national-map). 
     - [FTP LINK](ftp://rockyftp.cr.usgs.gov/vdelivery/Datasets/Staged/Elevation/)
 - [USGS National Transportation Dataset (NTD)](https://catalog.data.gov/dataset/usgs-national-transportation-dataset-ntd-downloadable-data-collectionde7d2)

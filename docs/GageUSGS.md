@@ -1,4 +1,7 @@
 # GageUSGS
+
+GageUSGS is a class object used for webscraping metadata, current information, and rating curves from USGS stream flow gages. At the moment, tidal and estuary gages are not supported. This file only works on python version 3.6 or newer.
+
 ```python
 GageUSGS(self, gage: str, get_rc: bool = True)
 ```
@@ -13,12 +16,13 @@ Parameters:
  - `gage (str)`: A string representing a USGS gage id (e.g. '01400000').
  - `get_rc (bool, optional)`: Get the rating curve for the USGS gage. Defaults to True.
 
+# Attributes / Methods:
 ## available_data
 The data available from the metadata url
 ## drainage_area_sqmi
 Drainage area upstream of the gage in sq miles
 ## feet_above_vertical_datum
-Feet aboe the vertical datum, for stage to elevation conversions
+Feet above the vertical datum, for stage to elevation conversions
 ## gage
 Gage id string
 ## horizontal_datum

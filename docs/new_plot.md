@@ -1,9 +1,9 @@
 # new_plot
 ```python
-new_plot(figsize: tuple = (20, 6), fontsize: int = 18, xlabel: str = 'Discharge (cms)', ylabel: str = 'Stage') -> <function subplots at 0x00000206243D5BF8>
+new_plot(figsize: tuple = (20, 6), fontsize: int = 18, xlabel: str = 'Discharge (cms)', ylabel: str = 'Stage') -> plt.subplots
 ```
 
-Generic plot setup
+Generic plot setup, optimized for viewing in a Jupyter Notebook.
 
 Parameters
 

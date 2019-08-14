@@ -1,6 +1,6 @@
 # Quickstart
 
-Below is an example of a Short Range stream flow forecast for a stream segmenton the Potomac River near DC:
+Below is an example of a Short Range stream flow forecast for a stream segment on the Potomac River near DC. The `comid` representing this stream segment has been pulled from the NHDPlus V2.1 dataset.
 
 ```python
 # Imports
@@ -16,7 +16,7 @@ fs = gcsfs.GCSFileSystem(project='national-water-model')
 # Parameters
 date = '20190802' # a date
 start_hr = '00' # start at 00:00
-comid = 4512772 # some small segment on the Potomac near DC
+comid = 4512772 # stream segment on the Potomac near DC
 ```
 ```python
 # Create a Short Range forecast and plot it

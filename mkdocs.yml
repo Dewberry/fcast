@@ -5,7 +5,7 @@ nav:
   - About: about.md
   - Setup: setup.md
   - Quickstart: quickstart.md
-  - fcast:
+  - fcast API:
     - GageUSGS: GageUSGS.md
     - StreamSegmentNHD: StreamSegmentNHD.md
     - Assim: Assim.md

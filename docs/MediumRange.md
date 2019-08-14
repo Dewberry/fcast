@@ -1,11 +1,18 @@
 # MediumRange
+
+According to [NOAA on the NWM:](https://water.noaa.gov/about/nwm)
+
+>The Medium Range Forecast configuration is executed four times per day, forced with GFS model output. Member 1 extends out to 10 days while members 2-7 extend out to 8.5 days. This configuration produces 3-hourly deterministic output and is initialized with the restart file from the Analysis and Assimilation configuration.
+
+Usage:
+
 ```python
 MediumRange(self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int, members: list = [1, 2, 3, 4, 5, 6, 7], NWMtype='medium')
 ```
 A representation of a Medium Range forecast made using NWM netcdf files on GCS
 
-Pulls the relevant files from GCS to make an 18 hour streamflow forecast beginning
-at a specified date and start time (UTC).
+Pulls the relevant files from GCS to make an 8.5 day streamflow forecast beginning
+at a specified date and start time (UTC), with data points in 3 hour steps.
 
 Parameters:
 
@@ -17,7 +24,9 @@ Parameters:
     country. More information [here.](http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide)
  - `date (str)`: The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)
  - `start_hr (int)`: The starting time (UTC) on for the date specified.
- - `members (list)`: The members you want the medium range forecast for. Defaults to [1, 2, 3, 4, 5, 6, 7]
+ - `members (list)`: The members you want the medium range forecast for. Defaults to `[1, 2, 3, 4, 5, 6, 7]`
+
+# Attributes / Methods:
 
 ## filepaths
 A list of lists, each containing the filepaths used for each member
@@ -33,4 +42,4 @@ The total number of files used to build the forecast
 ```python
 MediumRange.get_streamflow(self, assim_time: str, assim_flow: float) -> pandas.core.frame.DataFrame
 ```
-Get the forecasted streamflow for all members in one pandas dataframe.
+Get the forecasted streamflow for all selected members in one pandas dataframe, given an assim_time and assim_flow produced using the Assim class.
