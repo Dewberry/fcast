@@ -14,7 +14,6 @@ class TestGageUSGS(unittest.TestCase):
         self.id = '01651000'
         self.gage = GageUSGS(self.id)
 
-
     def test_avail_data(self):
         self.assertIsInstance(self.gage.available_data, pandas.DataFrame, 'Available data is not a pandas.DataFrame')
 
