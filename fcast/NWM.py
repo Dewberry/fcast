@@ -138,6 +138,7 @@ class Assim(NWM):
     def __init__(self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int, offset=0, NWMtype="assim"):
         super().__init__(fs, comid, date, start_hr, NWMtype)
 
+        assert offset in [0,1,2], "Must use 0, 1, or 2 as the offset."
         self._offset = offset
         self._filepath = f"{BUCKET}/nwm.{self._date}/{AA}/nwm.t{self._start_hr}z.{AA}.{CR}.tm0{self._offset}.{EXT}"
         self.__file = self._fs.open(self._filepath, "rb")
@@ -159,9 +160,9 @@ class Assim(NWM):
         return self.__assim["streamflow"].to_dataframe().loc[self._comid].values[0]
 
     @property
-    def nfiles(n: int = 3):
+    def nfiles(self):
         """The number of available files for this output (NWM v2 has 3 for analysis_assim)"""
-        return n
+        return 3
 
     @property
     def offset(self):
@@ -270,7 +271,7 @@ class MediumRange(NWM):
         def get_filepaths():
             """Get the filepaths that will be used to build the forecast. One list for each member"""
             filepaths = []
-            for mem in members:  # ensemble members 1-7
+            for mem in self._members:  # ensemble members 1-7
                 mem_filepaths = []
                 for i in self._forecast_hours:  # for hours 3-204 in steps of 3
                     hr = str(i).zfill(3)

@@ -52,8 +52,12 @@ class StreamSegmentNHD:
         if self.__warning:
             warnings.warn("Make sure your comidDict json NHDPlus version matches your gdb NHDPlus version")
 
+        if isinstance(list(comidDict.keys())[0], str):
+            self._comidDict = {int(k):int(v) for k, v in comidDict.items()}
+        else:
+            self._comidDict = comidDict
+
         self._comid = comid
-        self._comidDict = comidDict
         self._src = src
 
         def get_attrs():
