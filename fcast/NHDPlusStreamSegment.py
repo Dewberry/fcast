@@ -43,18 +43,14 @@ class StreamSegmentNHD:
                                   NHDPlus version matches that of the gdb.
     """
 
-    def __init__(
-        self, comid: int, comidDict: dict, src: fiona.collection, warning: bool = True
-    ):
+    def __init__(self, comid: int, comidDict: dict, src: fiona.collection, warning: bool = True):
 
         # This warning is temporary until a way to verify versions with an assert is established.
         # Unsure how to do that at the moment without opening the files within the class,
         # which would create more overhead if you are accessing more that one comid.
         self.__warning = warning
         if self.__warning:
-            warnings.warn(
-                "Make sure your comidDict json NHDPlus version matches your gdb NHDPlus version"
-            )
+            warnings.warn("Make sure your comidDict json NHDPlus version matches your gdb NHDPlus version")
 
         self._comid = comid
         self._comidDict = comidDict
@@ -147,7 +143,7 @@ class StreamSegmentNHD:
     @property
     def GNIS_id(self):
         """Geographic Names Information System ID for the value in GNIS_Name"""
-        return self._GNIS_ID
+        return self._GNIS_id
 
     @property
     def GNIS_name(self):
@@ -231,7 +227,9 @@ class StreamSegmentNHD:
 
     @property
     def annual_mean_flow_QC(self):
-        """Mean Annual Flow with Reference Gage Regression applied to QB (cfs). Best EROM estimate of "natural" mean flow."""
+        """Mean Annual Flow with Reference Gage Regression applied to QB (cfs).
+        Best EROM estimate of "natural" mean flow.
+        """
         return self._annual_mean_flow_QC
 
     @property
@@ -254,7 +252,8 @@ class StreamSegmentNHD:
         """
         'QA': 'Mean Annual Flow from runoff (cfs)',
         'VA': 'Mean Annual Velocity for QA (fps)',
-        'QC': 'Mean Annual Flow with Reference Gage Regression applied to QB (cfs). Best EROM estimate of "natural" mean flow.',
+        'QC': 'Mean Annual Flow with Reference Gage Regression applied to QB (cfs).
+               Best EROM estimate of "natural" mean flow.',
         'VC': 'Mean Annual Velocity for QC (fps). Best EROM estimate of "natural" mean velocity.',
         'QE': 'Mean Annual Flow from gage adjustment (cfs). Best EROM estimate of actual mean flow.',
         'VE': 'Mean Annual Velocity from gage adjustment (fps). Best EROM estimate of actual mean velocity.
