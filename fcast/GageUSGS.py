@@ -58,17 +58,15 @@ class GageUSGS:
             soup = BeautifulSoup(self.__metadata_request.text, "html.parser")
             sitetype = soup.find("h3").text.strip()
             if "Estuary" in sitetype or "Tidal" in sitetype:
-                raise NotImplementedError(
-                    f"Support for type: {sitetype} has not yet been implemented."
-                )
+                raise NotImplementedError(f"Support for type: {sitetype} has not yet been implemented.")
 
         check_implemented()
 
         def deg_to_dec(string) -> float:
             """
             Converts a coordinate in degrees, converts to decimal degree
-            :param string: An unwieldy lat/lon string (e.g. 40°34'14")
-            :return: Lat/lon coordinate as a float
+            param string: An unwieldy lat/lon string (e.g. 40°34'14")
+            return: Lat/lon coordinate as a float
             """
             deg = float(string.split("°")[0])
             mn = float(string.split("'")[0].split("°")[1])
@@ -79,11 +77,11 @@ class GageUSGS:
         def usgs_descrip_to_dict(descrip: list, gage: str) -> dict:
             """
             Takes a list of strings from the USGS Website, and turns it into a dictionary of metadata
-            :nested functions:
+            nested functions:
                 1. deg_to_dec
-            :param descrip: container for data from metadata ()
-            :param gage: Gage ID (e.g. '05418500')
-            :return: Dictionary of metadata
+            descrip: container for data from metadata ()
+            gage: Gage ID (e.g. '05418500')
+            Dictionary of metadata
             """
             # Initialize dictionary to be populated with data
             metadata = {}
@@ -97,32 +95,25 @@ class GageUSGS:
                     metadata[HUC8] = x.split(" ")[-1]
                 elif "Datum" in x:
                     metadata[VDATUM] = x.split("above ")[1].replace(".", "")
-                    metadata[RDATUM] = float(
-                        x.split(": ")[1].split(" feet")[0].replace(",", "")
-                    )
+                    metadata[RDATUM] = float(x.split(": ")[1].split(" feet")[0].replace(",", ""))
                 elif DA in x:
-                    metadata[DASQMILES] = float(
-                        x.split(": ")[1].split(" ")[0].replace(",", "")
-                    )
+                    metadata[DASQMILES] = float(x.split(": ")[1].split(" ")[0].replace(",", ""))
             metadata["gage"] = gage
             return metadata
 
         def get_gage_meta() -> dict:
             """
             Scrape metadata from USGS website
-            :nested functions:
+            nested functions:
                 1. usgs_descrip_to_dict
-            :return: selected metadata
+            return: selected metadata
             """
             soup = BeautifulSoup(self.__metadata_request.text, "html.parser")
             for row in soup.find("div", {"id": "stationTable"}).contents:
                 if "Latitude" in str(row):
                     break
             # Get a list of cleaned strings, each representing some metadata
-            descrip = [
-                j.text.replace("\xa0", "").replace("  ", " ")
-                for j in row.find_all("dd")
-            ]
+            descrip = [j.text.replace("\xa0", "").replace("  ", " ") for j in row.find_all("dd")]
             return usgs_descrip_to_dict(descrip, self._gage)
 
         self._metadata = get_gage_meta()
@@ -146,7 +137,7 @@ class GageUSGS:
         def get_gage_available_data() -> pd.DataFrame:
             """
             Scrape available data table from USGS website
-            :return: Html table as dataframe
+            return: Html table as dataframe
             """
             soup = BeautifulSoup(self.__metadata_request.content, "lxml")
             table = soup.find_all("table")[0]
@@ -157,11 +148,9 @@ class GageUSGS:
         def get_rating_curve() -> pd.DataFrame:
             """
             Reads the table beginning after comment lines at rc_url
-            :return: rating curve dataframe
+            return: rating curve dataframe
             """
-            assert (
-                "INDEP" in self.__rc_request.text
-            ), "There is no rating curve available, please set `get_rc` = False"
+            assert ("INDEP" in self.__rc_request.text), "No rating curve available, please set `get_rc` = False"
             a = self.__rc_request.text.split("\n")
             b = [i for i in a if "#" not in i]
             c = [i.split("\t") for i in b]
@@ -182,19 +171,10 @@ class GageUSGS:
             :return: Rating curve metadata dict
             """
             # Get a list of all commented lines, as well as all WARNING lines
-            metalines = [
-                line for line in self.__rc_request.text.split("\n") if "#" in line
-            ]
-            warnings = [
-                line
-                for line in self.__rc_request.text.split("\n")
-                if "# //WARNING" in line
-            ]
+            metalines = [line for line in self.__rc_request.text.split("\n") if "#" in line]
+            warnings = [line for line in self.__rc_request.text.split("\n") if "# //WARNING" in line]
             # Initialize dictionary to contain metadata
-            metadata = {}
-            metadata["WARNING"] = "".join(
-                [line.replace("# //WARNING", "") for line in warnings]
-            ).strip()
+            metadata = {"WARNING": "".join([line.replace("# //WARNING", "") for line in warnings]).strip()}
             for line in metalines:
                 # Populate the dictionary with all the metadata provided
                 if "RETRIEVED" in line:
@@ -213,9 +193,7 @@ class GageUSGS:
             self._rating_curve_metadata = get_rc_metadata()
         else:
             # Use this attr as an error message if the rating curve properties are called
-            self._rating_curve = (
-                "No rating curve retrieved. If rating curve desired, set get_rc = True"
-            )
+            self._rating_curve = "No rating curve retrieved. If rating curve desired, set get_rc = True"
 
     @property
     def rating_curve_metadata(self):
@@ -275,7 +253,7 @@ class GageUSGS:
 
     @property
     def feet_above_vertical_datum(self):
-        """Feet aboe the vertical datum, for stage to elevation conversions"""
+        """Feet above the vertical datum, for stage to elevation conversions"""
         return self._feet_above_vertical_datum
 
     @property
@@ -293,9 +271,13 @@ class GageUSGS:
         return self._rc_url
 
     # def open_main_site(self) -> IFrame:
-    #     """Open the selected USGS station website. Users can use this website to prepare the required parameters for retrieving the desired records."""
+    #     """Open the selected USGS station website. Users can use this website to prepare
+    #     the required parameters for retrieving the desired records.
+    #     """
     #     return IFrame(src=self._metadata_url, width='100%', height='500px')
 
     # def open_rating_curve_site(self) -> IFrame:
-    #     """Open the selected USGS station website. Users can use this website to prepare the required parameters for retrieving the desired records."""
+    #     """Open the selected USGS station website. Users can use this website to prepare
+    #     the required parameters for retrieving the desired records.
+    #     """
     #     return IFrame(src=self._rc_url, width='100%', height='500px')
