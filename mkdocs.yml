@@ -1,0 +1,22 @@
+site_name: fcast
+
+nav:
+  - Home: index.md
+  - About: about.md
+  - Setup: setup.md
+  - Quickstart: quickstart.md
+  - fcast API:
+    - GageUSGS: GageUSGS.md
+    - StreamSegmentNHD: StreamSegmentNHD.md
+    - Assim: Assim.md
+    - ShortRange: ShortRange.md
+    - MediumRange: MediumRange.md
+    - get_USGS_rc: get_USGS_rc.md
+    - get_USGS_stations: get_USGS_stations.md
+    - new_plot: new_plot.md
+    - plotShortRange: plotShortRange.md
+    - plotMediumRange: plotMediumRange.md
+  - Contributing: contributing.md
+  - Changelog: changelog.md
+
+theme: readthedocs

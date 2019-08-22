@@ -102,3 +102,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# dask
+dask-worker-space/
+
+# misc. data
+data/
+
+# pycharm
+.idea/
