@@ -29,4 +29,14 @@ __fcast__ is a collection of python tools used for forecasting flood events and 
  - [__compare_rc_NWM_USGS-Dev__](notebooks/compare_rc_NWM_USGS-Dev.ipynb): Development space for comparing rating curves from the National Water Model to the rating curves from the USGS.
  - [__explore_NHDPlus-Dev__](notebooks/explore_NHDPlus-Dev.ipynb): Development space for the StreamSegmentNHD class.
  
-`docs` - In development.
+`notebooks/data_exploration` - A collection of Jupyter notebooks used for exploring 1D and 2D NWM rating curves and retrieving NWM HAND datasets.
+ - [__rating_curves__](notebooks/data_exploration/rating_curves.ipynb): Exploration and comparison of the `hydroprop-fulltable-HUC6.nohand0.csv` and `hydroprop-fulltable-HUC6.csv` rating curve files.
+ - [__rating_curves_1D_nc__](notebooks/data_exploration/rating_curves_1D_nc.ipynb): Exploration of rating curves from the NWM 1D netcdf file.
+ - [__rating_curves_2D_nc__](notebooks/data_exploration/rating_curves_2D_nc.ipynb): Exploration of rating curves from the NWM 2D netcdf file.
+ - [__retrieve_HAND_datasets__](notebooks/data_exploration/retrieve_HAND_datasets.ipynb): Download of HAND datasets for data exploration.
+ 
+`reanalysis` - An initial look at the NWM reanalysis netcdf files.
+ - [__Clean_data_By_date__](reanalysis/Clean_data_By_date.py): Organizing downloaded data by dates.
+ - [__Download_Reanalysis_Data__](reanalysis/Download_Reanalysis_Data.py): Downloading reanalysis netcdf files from s3.
+ - [__Plot__](reanalysis/Plot.py): Plotting NWM reanalysis data.
+ - [__Time_series__](reanalysis/Time_Series.py): Making a time series at a specific ComID.
