@@ -41,7 +41,6 @@ def s3List(bucketName, prefixName, nameSelector, fileformat):
         keys = s3_client.list_objects_v2(Bucket=bucketName, Prefix=prefixName,
                                          ContinuationToken=keys['NextContinuationToken'])
         keysList.append(keys)
-
     # Create a list of GeoTiffs from the supplied keys
     #     While tif is hardcoded now, this could be easily changed.
     pathsList = []
@@ -49,7 +48,6 @@ def s3List(bucketName, prefixName, nameSelector, fileformat):
         paths = ['s3://' + bucketName + '/' + elem['Key'] for elem in key['Contents'] \
                  if elem['Key'].find('{}'.format(nameSelector)) >= 0 and elem['Key'].endswith(fileformat)]
         pathsList = pathsList + paths
-
     return pathsList
 
 if __name__ == '__main__':
