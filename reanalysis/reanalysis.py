@@ -4,6 +4,7 @@ import os
 from multiprocessing import Pool, cpu_count
 import pandas as pd
 
+
 def s3List(bucketName, prefixName, nameSelector, fileformat):
     """
         This function takes an S3 bucket name and prefix (flat directory path) and returns a list of netcdf file.
@@ -78,7 +79,7 @@ def _single_dl(args: tuple):
         s3client.download_file(bucket, key, os.path.join(download_dir, filename))
 
 
-def s3download_parallel(s3paths, download_dir):
+def s3download_parallel(s3paths: list, download_dir: str):
     """Downloads a all s3 files in a given list of s3paths to a specified directory in parallel"""
     args = [(f, download_dir) for f in s3paths]
     p = Pool(int(cpu_count()*2))
