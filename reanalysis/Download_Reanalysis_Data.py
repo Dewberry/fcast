@@ -15,12 +15,6 @@ import dask
 import netCDF4
 import xarray as xr
 import pandas as pd
-s3client = boto3.client("s3")
-s3 = boto3.resource('s3')
-bucket='nwm-archive'
-prefix = '2003'
-s3Obj = s3.Object(bucket_name=bucket, key=prefix)
-print(s3Obj)
 
 
 # Amazon Ops
@@ -47,7 +41,6 @@ def s3List(bucketName, prefixName, nameSelector, fileformat):
         keys = s3_client.list_objects_v2(Bucket=bucketName, Prefix=prefixName,
                                          ContinuationToken=keys['NextContinuationToken'])
         keysList.append(keys)
-
     # Create a list of GeoTiffs from the supplied keys
     #     While tif is hardcoded now, this could be easily changed.
     pathsList = []
@@ -55,17 +48,23 @@ def s3List(bucketName, prefixName, nameSelector, fileformat):
         paths = ['s3://' + bucketName + '/' + elem['Key'] for elem in key['Contents'] \
                  if elem['Key'].find('{}'.format(nameSelector)) >= 0 and elem['Key'].endswith(fileformat)]
         pathsList = pathsList + paths
-
     return pathsList
 
+if __name__ == '__main__':
+    s3client = boto3.client("s3")
+    s3 = boto3.resource('s3')
+    bucket = 'nwm-archive'
+    prefix = '2003'
+    s3Obj = s3.Object(bucket_name=bucket, key=prefix)
+    print(s3Obj)
 
-datafiles = s3List(bucket, prefix, 'CHRTOUT', 'DOMAIN1.comp')
-#datafile = datafiles[0]
-# print(datafiles)
+    datafiles = s3List(bucket, prefix, 'CHRTOUT', 'DOMAIN1.comp')
+    #datafile = datafiles[0]
+    # print(datafiles)
 
 
-for obj in datafiles:
-    filename = obj.split("/")[-1]
-    # print(obj)
-    s3client.download_file(bucket,prefix+'/'+filename, "./output/" + filename)
+    for obj in datafiles:
+        filename = obj.split("/")[-1]
+        # print(obj)
+        s3client.download_file(bucket,prefix+'/'+filename, "./output/" + filename)
 
