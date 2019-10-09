@@ -1,3 +1,5 @@
+<img src="docs/img/main_graphic.png" alt="fcast" width=100% height=auto>
+
 # fcast
 
 ---
