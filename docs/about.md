@@ -1,6 +1,6 @@
 # Overview
 
-`fcast` is a collection of python tools used for leveraging National Water Model and other data products to forecast flood events and their potential impacts on transportation infrastructure. 
+`fcast` is a collection of python tools used for leveraging National Water Model and other data products to forecast flood events and their potential impacts on transportation infrastructure. Click here for more information on the [floodcast project](http://floodcast.info) (`fcast`).
 
 
 The following datasets are used:
