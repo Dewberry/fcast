@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>About - fcast</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "About";
+    var mkdocs_page_input_path = "about.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> fcast</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">About</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#overview">Overview</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../setup/">Setup</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../quickstart/">Quickstart</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">fcast API</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../GageUSGS/">GageUSGS</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../StreamSegmentNHD/">StreamSegmentNHD</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Assim/">Assim</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../ShortRange/">ShortRange</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../MediumRange/">MediumRange</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../get_USGS_rc/">get_USGS_rc</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../get_USGS_stations/">get_USGS_stations</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../new_plot/">new_plot</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../plotShortRange/">plotShortRange</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../plotMediumRange/">plotMediumRange</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../contributing/">Contributing</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../changelog/">Changelog</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">fcast</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>About</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="overview">Overview</h1>
+<p><code>fcast</code> is a collection of python tools used for leveraging National Water Model and other data products to forecast flood events and their potential impacts on transportation infrastructure. Click here for more information on the <a href="http://floodcast.info">floodcast project</a> (<code>fcast</code>).</p>
+<p>The following datasets are used:</p>
+<ul>
+<li><a href="http://www.horizon-systems.com/NHDPlus/NHDPlusV2_home.php">The NHDPlus V2.1 dataset</a><ul>
+<li>In particular, the <em>NHDPlusV21_National_Seamless_Flattened_Lower48.gdb</em> is utilized.</li>
+</ul>
+</li>
+<li>Staged Elevation from <a href="https://www.usgs.gov/core-science-systems/national-geospatial-program/national-map">The National Map</a>. <ul>
+<li><a href="ftp://rockyftp.cr.usgs.gov/vdelivery/Datasets/Staged/Elevation/">FTP</a></li>
+</ul>
+</li>
+<li><a href="https://catalog.data.gov/dataset/usgs-national-transportation-dataset-ntd-downloadable-data-collectionde7d2">USGS National Transportation Dataset (NTD)</a></li>
+<li><a href="https://water.noaa.gov/about/nwm">The National Water Model (NWM)</a><ul>
+<li><a href="https://console.cloud.google.com/marketplace/details/noaa-public/national-water-model?filter=category:climate&amp;id=2b3b4e1c-20ad-455c-89c5-7c09b82c7f98">GCS</a></li>
+<li><a href="https://docs.opendata.aws/noaa-nwm-pds/readme.html">AWS</a></li>
+</ul>
+</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../setup/" class="btn btn-neutral float-right" title="Setup">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../setup/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

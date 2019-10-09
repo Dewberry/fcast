@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>MediumRange - fcast</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "MediumRange";
+    var mkdocs_page_input_path = "MediumRange.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> fcast</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../about/">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../setup/">Setup</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../quickstart/">Quickstart</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">fcast API</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../GageUSGS/">GageUSGS</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../StreamSegmentNHD/">StreamSegmentNHD</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Assim/">Assim</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../ShortRange/">ShortRange</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">MediumRange</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#mediumrange">MediumRange</a></li>
+    
+
+    <li class="toctree-l3"><a href="#attributes-methods">Attributes / Methods:</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#filepaths">filepaths</a></li>
+        
+            <li><a class="toctree-l4" href="#forecast_hours">forecast_hours</a></li>
+        
+            <li><a class="toctree-l4" href="#mem_dsets">mem_dsets</a></li>
+        
+            <li><a class="toctree-l4" href="#members">members</a></li>
+        
+            <li><a class="toctree-l4" href="#nfiles">nfiles</a></li>
+        
+            <li><a class="toctree-l4" href="#get_streamflow">get_streamflow</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../get_USGS_rc/">get_USGS_rc</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../get_USGS_stations/">get_USGS_stations</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../new_plot/">new_plot</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../plotShortRange/">plotShortRange</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../plotMediumRange/">plotMediumRange</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../contributing/">Contributing</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../changelog/">Changelog</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">fcast</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>fcast API &raquo;</li>
+        
+      
+    
+    <li>MediumRange</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="mediumrange">MediumRange</h1>
+<p>According to <a href="https://water.noaa.gov/about/nwm">NOAA on the NWM:</a></p>
+<blockquote>
+<p>The Medium Range Forecast configuration is executed four times per day, forced with GFS model output. Member 1 extends out to 10 days while members 2-7 extend out to 8.5 days. This configuration produces 3-hourly deterministic output and is initialized with the restart file from the Analysis and Assimilation configuration.</p>
+</blockquote>
+<p>Usage:</p>
+<pre><code class="python">MediumRange(self, fs: gcsfs.core.GCSFileSystem, comid: int, date: str, start_hr: int, members: list = [1, 2, 3, 4, 5, 6, 7], NWMtype='medium')
+</code></pre>
+
+<p>A representation of a Medium Range forecast made using NWM netcdf files on GCS</p>
+<p>Pulls the relevant files from GCS to make an 8.5 day streamflow forecast beginning
+at a specified date and start time (UTC), with data points in 3 hour steps.</p>
+<p>Parameters:</p>
+<ul>
+<li><code>fs (gcsfs.core.GCSFileSystem)</code>: The mounted NWM Google Cloud Storage Bucket using gcsfs.
+    This is created like so: <code>fs = gcsfs.GCSFileSystem(project='national-water-model')</code></li>
+<li><code>comid (int)</code>: The ComID that corresponds to the stream segment of interest.
+    The ComID is a common identifier (unique) that allows a user of the NHDPlusV21
+    to access the same stream segements across the entire NHDPlus anywhere in the
+    country. More information <a href="http://www.horizon-systems.com/NHDPlus/NHDPlusV2_documentation.php#NHDPlusV2%20User%20Guide">here.</a></li>
+<li><code>date (str)</code>: The date of the model output being used. (e.g. '20190802' for Aug 2, 2019)</li>
+<li><code>start_hr (int)</code>: The starting time (UTC) on for the date specified.</li>
+<li><code>members (list)</code>: The members you want the medium range forecast for. Defaults to <code>[1, 2, 3, 4, 5, 6, 7]</code></li>
+</ul>
+<h1 id="attributes-methods">Attributes / Methods:</h1>
+<h2 id="filepaths">filepaths</h2>
+<p>A list of lists, each containing the filepaths used for each member</p>
+<h2 id="forecast_hours">forecast_hours</h2>
+<p>A list of forecast hours. For MediumRange this is hours 3-204 in steps of 3</p>
+<h2 id="mem_dsets">mem_dsets</h2>
+<p>A list of stacked xarray datasets, each representing a member</p>
+<h2 id="members">members</h2>
+<p>The members that a MediumRange forecast will be created for</p>
+<h2 id="nfiles">nfiles</h2>
+<p>The total number of files used to build the forecast</p>
+<h2 id="get_streamflow">get_streamflow</h2>
+<pre><code class="python">MediumRange.get_streamflow(self, assim_time: str, assim_flow: float) -&gt; pandas.core.frame.DataFrame
+</code></pre>
+
+<p>Get the forecasted streamflow for all selected members in one pandas dataframe, given an assim_time and assim_flow produced using the Assim class.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../get_USGS_rc/" class="btn btn-neutral float-right" title="get_USGS_rc">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../ShortRange/" class="btn btn-neutral" title="ShortRange"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../ShortRange/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../get_USGS_rc/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

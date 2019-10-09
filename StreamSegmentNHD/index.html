@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>StreamSegmentNHD - fcast</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "StreamSegmentNHD";
+    var mkdocs_page_input_path = "StreamSegmentNHD.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> fcast</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../about/">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../setup/">Setup</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../quickstart/">Quickstart</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">fcast API</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../GageUSGS/">GageUSGS</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">StreamSegmentNHD</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#streamsegmentnhd">StreamSegmentNHD</a></li>
+    
+
+    <li class="toctree-l3"><a href="#attributes-methods">Attributes / Methods:</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#annual_mean_flow_qa">annual_mean_flow_QA</a></li>
+        
+            <li><a class="toctree-l4" href="#annual_mean_flow_qc">annual_mean_flow_QC</a></li>
+        
+            <li><a class="toctree-l4" href="#annual_mean_flow_qe">annual_mean_flow_QE</a></li>
+        
+            <li><a class="toctree-l4" href="#annual_mean_vel_qa">annual_mean_vel_QA</a></li>
+        
+            <li><a class="toctree-l4" href="#annual_mean_vel_qc">annual_mean_vel_QC</a></li>
+        
+            <li><a class="toctree-l4" href="#annual_mean_vel_qe">annual_mean_vel_QE</a></li>
+        
+            <li><a class="toctree-l4" href="#attrs">attrs</a></li>
+        
+            <li><a class="toctree-l4" href="#comid">comid</a></li>
+        
+            <li><a class="toctree-l4" href="#comiddict">comidDict</a></li>
+        
+            <li><a class="toctree-l4" href="#crs_proj4">crs_proj4</a></li>
+        
+            <li><a class="toctree-l4" href="#crs_wkt">crs_wkt</a></li>
+        
+            <li><a class="toctree-l4" href="#current_month_qv">current_month_QV</a></li>
+        
+            <li><a class="toctree-l4" href="#feat_currency_date">feat_currency_date</a></li>
+        
+            <li><a class="toctree-l4" href="#from_node_id">from_node_id</a></li>
+        
+            <li><a class="toctree-l4" href="#geometry">geometry</a></li>
+        
+            <li><a class="toctree-l4" href="#gnis_id">GNIS_id</a></li>
+        
+            <li><a class="toctree-l4" href="#gnis_name">GNIS_name</a></li>
+        
+            <li><a class="toctree-l4" href="#length_km">length_km</a></li>
+        
+            <li><a class="toctree-l4" href="#max_elev_raw">max_elev_raw</a></li>
+        
+            <li><a class="toctree-l4" href="#max_elev_smoothed">max_elev_smoothed</a></li>
+        
+            <li><a class="toctree-l4" href="#min_elev_raw">min_elev_raw</a></li>
+        
+            <li><a class="toctree-l4" href="#min_elev_smoothed">min_elev_smoothed</a></li>
+        
+            <li><a class="toctree-l4" href="#qv_meta">QV_meta</a></li>
+        
+            <li><a class="toctree-l4" href="#reach_code">reach_code</a></li>
+        
+            <li><a class="toctree-l4" href="#resolution">resolution</a></li>
+        
+            <li><a class="toctree-l4" href="#src">src</a></li>
+        
+            <li><a class="toctree-l4" href="#stream_order">stream_order</a></li>
+        
+            <li><a class="toctree-l4" href="#tidal">tidal</a></li>
+        
+            <li><a class="toctree-l4" href="#to_node_id">to_node_id</a></li>
+        
+            <li><a class="toctree-l4" href="#tot_drainage_area_sqkm">tot_drainage_area_sqkm</a></li>
+        
+            <li><a class="toctree-l4" href="#wb_area_comid">WB_area_comid</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Assim/">Assim</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../ShortRange/">ShortRange</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../MediumRange/">MediumRange</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../get_USGS_rc/">get_USGS_rc</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../get_USGS_stations/">get_USGS_stations</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../new_plot/">new_plot</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../plotShortRange/">plotShortRange</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../plotMediumRange/">plotMediumRange</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../contributing/">Contributing</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../changelog/">Changelog</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">fcast</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>fcast API &raquo;</li>
+        
+      
+    
+    <li>StreamSegmentNHD</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="streamsegmentnhd">StreamSegmentNHD</h1>
+<p>StreamSegmentNHD is a class object that represents a stream segment
+in the NHDPlusV2.1. It is built for easy access to a single stream
+segment represented by a ComID without overburdening memory. It is
+meant for the NHDPlusV21_National_Seamless_Flattened_Lower48.gdb. It
+also requires a ComID dictionary used as a map, which can be found at
+<code>s3://nwm-datasets/Data/Vector/NHDPlusV21_CONUS_seamless/comidDict_NHDPlusV21.json</code>
+or can be made using fiona like so:</p>
+<pre><code class="python">gdb = 'NHDPlusV21_National_Seamless_Flattened_Lower48.gdb'
+src = fiona.open(gdb, layer='NHDFlowline_Network')
+comidDict = {src[f]['properties']['COMID']: k for k in src.keys()}
+</code></pre>
+
+<pre><code class="python">StreamSegmentNHD(self, comid: int, comidDict: dict, src: fiona.collection, warning: bool = True)
+</code></pre>
+
+<p>A representation of one individual NHDPlusV2.1 ComID stream segment.</p>
+<p>For detailed information on the dataset, download the Release Notes from <a href="http://www.horizon-systems.com/NHDPlusData/NHDPlusV21/Data/NationalData/0Release_Notes_NationalData_Seamless_GeoDatabase.pdf">here</a></p>
+<p>All property docstrings have been pulled from these release notes.</p>
+<p>Parameters:</p>
+<ul>
+<li><code>comid (int)</code>: The comID that corresponds to the stream segment of interest.</li>
+<li><code>comidDict (dict)</code>: The dictionary used to map the ComIDs to the feature index in
+                  the gdb. Generally loaded into memory using json.load(filepath)</li>
+<li><code>src (fiona.collection)</code>: The open fiona collection representing the gdb and the
+                        'NHDFlowline_Network' layer.</li>
+<li><code>warning (bool, optional)</code>: Defaults to true. Raises a warning to ensure the comidDict
+                          NHDPlus version matches that of the gdb.</li>
+</ul>
+<h1 id="attributes-methods">Attributes / Methods:</h1>
+<h2 id="annual_mean_flow_qa">annual_mean_flow_QA</h2>
+<p>Mean Annual Flow from runoff (cfs)</p>
+<h2 id="annual_mean_flow_qc">annual_mean_flow_QC</h2>
+<p>Mean Annual Flow with Reference Gage Regression applied to QB (cfs). Best EROM estimate of "natural" mean flow.</p>
+<h2 id="annual_mean_flow_qe">annual_mean_flow_QE</h2>
+<p>Mean Annual Flow from gage adjustment (cfs). Best EROM estimate of actual mean flow.</p>
+<h2 id="annual_mean_vel_qa">annual_mean_vel_QA</h2>
+<p>Mean Annual Velocity for QA (fps)</p>
+<h2 id="annual_mean_vel_qc">annual_mean_vel_QC</h2>
+<p>Mean Annual Velocity for QC (fps). Best EROM estimate of "natural" mean velocity.</p>
+<h2 id="annual_mean_vel_qe">annual_mean_vel_QE</h2>
+<p>Mean Annual Velocity from gage adjustment (fps). Best EROM estimate of actual mean velocity.</p>
+<h2 id="attrs">attrs</h2>
+<p>An OrderedDict of all attributes for the stream segment</p>
+<h2 id="comid">comid</h2>
+<p>Common identifier of the NHD feature</p>
+<h2 id="comiddict">comidDict</h2>
+<p>Dictionary containing the ComID -&gt; feature index map</p>
+<h2 id="crs_proj4">crs_proj4</h2>
+<p>The crs of the dataset as a proj4 string</p>
+<h2 id="crs_wkt">crs_wkt</h2>
+<p>The crs of the dataset as wkt</p>
+<h2 id="current_month_qv">current_month_QV</h2>
+<pre><code>'QA': 'Mean Annual Flow from runoff (cfs)',
+'VA': 'Mean Annual Velocity for QA (fps)',
+'QC': 'Mean Annual Flow with Reference Gage Regression applied to QB (cfs). 
+       Best EROM estimate of "natural" mean flow.',
+'VC': 'Mean Annual Velocity for QC (fps). Best EROM estimate of "natural" mean velocity.',
+'QE': 'Mean Annual Flow from gage adjustment (cfs). Best EROM estimate of actual mean flow.',
+'VE': 'Mean Annual Velocity from gage adjustment (fps). Best EROM estimate of actual mean velocity.
+</code></pre>
+<h2 id="feat_currency_date">feat_currency_date</h2>
+<p>Feature Currency Date</p>
+<h2 id="from_node_id">from_node_id</h2>
+<p>Unique identifier for the point at the top of the NHDFlowline feature</p>
+<h2 id="geometry">geometry</h2>
+<p>Shapely representation of the line segment</p>
+<h2 id="gnis_id">GNIS_id</h2>
+<p>Geographic Names Information System ID for the value in GNIS_Name</p>
+<h2 id="gnis_name">GNIS_name</h2>
+<p>Feature Name from the Geographic Names Information System</p>
+<h2 id="length_km">length_km</h2>
+<p>Feature length in kilometers</p>
+<h2 id="max_elev_raw">max_elev_raw</h2>
+<p>Maximum elevation (unsmoothed) in centimeters</p>
+<h2 id="max_elev_smoothed">max_elev_smoothed</h2>
+<p>Maximum elevation (smoothed) in centimeters</p>
+<h2 id="min_elev_raw">min_elev_raw</h2>
+<p>Minimum elevation (unsmoothed) in centimeters</p>
+<h2 id="min_elev_smoothed">min_elev_smoothed</h2>
+<p>Minimum elevation (smoothed) in centimeters</p>
+<h2 id="qv_meta">QV_meta</h2>
+<p>Metadata describing the results of current_month_QV</p>
+<h2 id="reach_code">reach_code</h2>
+<p>Reach Code assigned to feature</p>
+<h2 id="resolution">resolution</h2>
+<p>NHD database resolution (i.e. 'high', 'medium' or 'local')</p>
+<h2 id="src">src</h2>
+<p>The opened fiona collection of the gdb and the 'NHDFlowline_Network' layer</p>
+<h2 id="stream_order">stream_order</h2>
+<p>Modified Strahler Stream Order</p>
+<h2 id="tidal">tidal</h2>
+<p>Is Flowline Tidal? 1=yes, 0=no</p>
+<h2 id="to_node_id">to_node_id</h2>
+<p>Unique identifier for the point at the end of the NHDFlowline feature</p>
+<h2 id="tot_drainage_area_sqkm">tot_drainage_area_sqkm</h2>
+<p>Total upstream catchment area from downstream end of flowline.</p>
+<h2 id="wb_area_comid">WB_area_comid</h2>
+<p>ComID of the NHD polygonal water feature through which a NHD "Artificial Path" flowline flows</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Assim/" class="btn btn-neutral float-right" title="Assim">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../GageUSGS/" class="btn btn-neutral" title="GageUSGS"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../GageUSGS/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../Assim/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
