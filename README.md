@@ -14,6 +14,12 @@ __fcast__ is a collection of python tools used for forecasting flood events and 
   - [More information](https://water.noaa.gov/about/nwm)
   
 ---
+
+## Installation
+
+See https://dewberry.github.io/fcast/setup/ for installation details.
+
+---
   
 ## Contents
 `fcast` - The collection of core .py files.
