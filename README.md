@@ -1,10 +1,10 @@
 <img src="docs/img/main_graphic.png" alt="fcast" width=100% height=auto>
 
-# fcast
+# [fcast](https://dewberry.github.io/fcast/)
 
 ---
 
-# Description
+## Description
 __fcast__ is a collection of python tools used for forecasting flood events and their impact on transportation infrastructure. The following datasets are used:
 - [The NHDPlus V2.1 dataset](http://www.horizon-systems.com/NHDPlus/NHDPlusV2_home.php)
 - Staged Elevation from [The National Map](https://www.usgs.gov/core-science-systems/national-geospatial-program/national-map). 
@@ -15,7 +15,7 @@ __fcast__ is a collection of python tools used for forecasting flood events and 
   
 ---
   
-# Contents
+## Contents
 `fcast` - The collection of core .py files.
  - [__GageUSGS__](fcast/GageUSGS.py): An API for webscraping stream gage data from various USGS websites.
  - [__NHDPlusStreamSegment__](fcast/NHDPlusStreamSegment.py): An API for quick and easy access to the NHDPlus V2.1.
@@ -44,3 +44,5 @@ __fcast__ is a collection of python tools used for forecasting flood events and 
  - [__Time_series__](reanalysis/Time_Series.py): Making a time series at a specific ComID.
  - [__explore_reanalysis-Dev__](reanalysis/explore_reanalysis-Dev.ipynb): A notebook for downloading a time series of reanalysis data from s3 and making a streamflow time series plot at one ComID.
  - [__reanalysis__](reanalysis/reanalysis.py): Functions used in the __explore_reanalysis-Dev__ notebook.
+ 
+## [View the Documentation](https://dewberry.github.io/fcast/)
