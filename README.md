@@ -1,3 +1,5 @@
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Dewberry/fcast/feature/binder)
+
 <img src="docs/img/main_graphic.png" alt="fcast" width=100% height=auto>
 
 # [fcast](https://dewberry.github.io/fcast/)
