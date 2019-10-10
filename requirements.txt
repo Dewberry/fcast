@@ -10,3 +10,6 @@ beautifulsoup4==4.8.0
 fiona==1.8.4
 shapely==1.6.4.post2
 lxml
+toolz
+dask
+h5netcdf
