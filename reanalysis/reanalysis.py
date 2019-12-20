@@ -71,7 +71,7 @@ def s3download(s3paths: list, download_dir: str):
     return
 
 
-def _single_dl(args: tuple):
+def s3_single_dl(args: tuple):
     """Unpack tuple of arguments (s3path, download directory) to allow parallel download from s3"""
     file = args[0]
     download_dir = args[1]
@@ -86,9 +86,8 @@ def _single_dl(args: tuple):
 def s3download_parallel(s3paths: list, download_dir: str):
     """Downloads a all s3 files in a given list of s3paths to a specified directory in parallel"""
     args = [(f, download_dir) for f in s3paths]
-    p = Pool(int(cpu_count()*2))
-    p.map(_single_dl, args)
-    p.close()
+    with Pool(int(cpu_count()*2)) as p:
+        p.map(s3_single_dl, args)
     return
 
 
@@ -123,7 +122,7 @@ def get_reanalysis_paths_gs(start_date, end_date, freq, target_analysis):
     return gs_paths    
 
 
-def single_dl(file_path, download_dir = './data'):
+def gcp_single_dl(file_path, download_dir = './data'):
     fs = gcsfs.GCSFileSystem(project='national-water-model-v2')
     output_path = download_dir + "/" + file_path.split("/")[-1]
     fs.download(file_path, output_path)
@@ -137,9 +136,8 @@ def data_access_gs(file_paths_list, gs_access_method='real-time', download_dir='
         all_data = xr.open_mfdataset(openfiles)
         print(round((time()-start), 2), 'seconds to access the data for the given duration')
     if gs_access_method == 'download':
-        p = Pool(int(cpu_count()*2))
-        p.map(single_dl, file_paths_list)
-        p.close()
+        with Pool(int(cpu_count()*2)) as p:
+            p.map(gcp_single_dl, file_paths_list)
         files = glob(download_dir + '/*')
         assert len(files) == len(file_paths_list), 'Downloading error'
         all_data = xr.open_mfdataset(files)
