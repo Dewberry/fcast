@@ -120,7 +120,13 @@ def get_reanalysis_paths_gs(start_date, end_date, freq, target_analysis):
     gs_paths = []
     for record in records_wanted:
         gs_paths.append(target_dir + record[:4] + "/" + record +'.CHRTOUT_DOMAIN1.comp')
-    return(gs_paths)    
+    return gs_paths    
+
+
+def single_dl(file_path, download_dir = './data'):
+    fs = gcsfs.GCSFileSystem(project='national-water-model-v2')
+    output_path = download_dir + "/" + file_path.split("/")[-1]
+    fs.download(file_path, output_path)
 
 
 def data_access_gs(file_paths_list, gs_access_method='real-time', download_dir='./data'):
@@ -131,10 +137,11 @@ def data_access_gs(file_paths_list, gs_access_method='real-time', download_dir='
         all_data = xr.open_mfdataset(openfiles)
         print(round((time()-start), 2), 'seconds to access the data for the given duration')
     if gs_access_method == 'download':
-        for file_path in file_paths_list:
-            fs.download(file_path,download_dir+ "/" + file_path.split("/")[-1])
+        p = Pool(int(cpu_count()*2))
+        p.map(single_dl, file_paths_list)
+        p.close()
         files = glob(download_dir + '/*')
         assert len(files) == len(file_paths_list), 'Downloading error'
         all_data = xr.open_mfdataset(files)
         print(round((time()-start), 2), 'seconds to download', sum([os.path.getsize(f) for f in files])/1e9, 'GB of data for the given duration')
-    return(all_data)
+    return all_data
